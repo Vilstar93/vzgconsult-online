@@ -36,6 +36,7 @@
         "url": "https://github.com/StartBootstrap/startbootstrap-business-casual.git"
     },
     "dependencies": {
+        "@vercel/analytics": "^2.0.1",
         "bootstrap": "5.2.3",
         "stripe": "^16.0.0"
     },
