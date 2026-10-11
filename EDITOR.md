@@ -27,6 +27,27 @@ EDITOR_PASSWORD=meinGeheimesPasswort npm start
 # Login: Benutzer "vzg", Passwort wie gesetzt
 ```
 
+### Direkt aus dem Editor nach GitHub veröffentlichen
+
+Mit dem Button **🚀 Veröffentlichen** (oben rechts) werden die Änderungen
+committet und zu GitHub gepusht – Vercel baut die Live-Seite danach automatisch
+neu. Dafür braucht der Server ein **Schreib-Token** in der Umgebung:
+
+```bash
+EDITOR_PASSWORD=geheim \
+GIT_PUSH_TOKEN=github_pat_xxx \
+npm start
+```
+
+- `GIT_PUSH_TOKEN` – ein GitHub-Token mit Schreibrecht (Fine-grained PAT mit
+  *Contents: Read and write*, oder Classic PAT mit `repo`).
+- `GIT_BRANCH` – Ziel-Branch (Standard: `main`).
+
+> Ohne gesetztes `GIT_PUSH_TOKEN` bleibt der Button inaktiv und meldet
+> „Kein Schreib-Token gesetzt". Speichern/Neu-Bauen funktioniert trotzdem
+> lokal. Das Token wird nur an `git` weitergereicht (über einen
+> Credential-Helper) und erscheint **nicht** in der Prozessliste.
+
 ---
 
 ## Bedienung
