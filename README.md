@@ -46,6 +46,15 @@ cd server && npm install && cp .env.example .env && npm start
 
 Siehe `PAYMENTS.md` (Einrichtung) und `PAYMENT-OPTIONS.md` (Anbietervergleich).
 
+## Visueller Editor (Drag & Drop)
+
+Die Website lässt sich ohne Code visuell bearbeiten – wie in Webador/Wix.
+Details siehe `EDITOR.md`.
+
+```bash
+cd editor && npm install && npm start   # -> http://localhost:4500
+```
+
 ## Deployment
 
 Für Vercel (empfohlen, inkl. Serverless-Checkout) siehe
