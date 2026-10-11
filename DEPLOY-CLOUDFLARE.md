@@ -1,0 +1,61 @@
+# Deployment auf Cloudflare Pages (VZG Consult)
+
+Cloudflare Pages ist die kostenlose Alternative zu Vercel – unbegrenzter
+Traffic, keine „Pro"-Hürde, funktioniert mit privaten GitHub-Repositories.
+
+## 1. Projekt anlegen
+
+1. https://dash.cloudflare.com → **Workers & Pages** → **Create** → **Pages**
+   → **Connect to Git**.
+2. GitHub verbinden und Repository **`Vilstar93/vzgconsult-online`** wählen
+   (bei privatem Repo die Cloudflare-GitHub-App für dieses Repo freigeben).
+3. Branch: **`main`**.
+4. Build-Einstellungen:
+
+   | Feld | Wert |
+   | --- | --- |
+   | Framework preset | **None** |
+   | Build command | `npm run build` |
+   | Build output directory | `dist` |
+
+5. **Save and Deploy**.
+
+## 2. Umgebungsvariablen
+
+**Settings → Variables and Secrets** (Production):
+
+| Name | Wert |
+| --- | --- |
+| `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
+| `PAYPERCUT_SECRET_KEY` | `sk_test_...` bzw. `sk_live_...` |
+| `PAYPERCUT_WEBHOOK_SECRET` | `whsec_...` |
+| `PUBLIC_BASE_URL` | `https://<projekt>.pages.dev` (später die Domain) |
+| `STRIPE_SECRET_KEY` | nur bei Stripe |
+| `STRIPE_WEBHOOK_SECRET` | nur bei Stripe |
+
+> `PORT` nicht setzen.
+
+## 3. Zahlungsfunktionen
+
+Die Serverless-Funktionen liegen unter `functions/api/` und werden automatisch
+unter `/api/...` bereitgestellt – identische Pfade wie die Vercel-Varianten:
+
+- `functions/api/create-checkout-session.js` → `/api/create-checkout-session`
+- `functions/api/webhook.js` → `/api/webhook`
+
+Das Buchungsformular (`termin.html`) nutzt weiterhin
+`data-checkout-url="/api/create-checkout-session"` – keine Änderung nötig.
+
+## 4. Webhook im Paypercut-Dashboard
+
+`https://<projekt>.pages.dev/api/webhook` eintragen (später die eigene Domain).
+
+## 5. Eigene Domain
+
+**Custom domains** → Domain hinzufügen. Bei einer Domain, die bereits bei
+Cloudflare liegt, wird der DNS-Eintrag automatisch gesetzt; HTTPS ist inklusive.
+
+## 6. Security-Header
+
+`public/_headers` wird nach `dist/` kopiert und setzt u. a.
+`X-Content-Type-Options`, `X-Frame-Options` und `Referrer-Policy`.
