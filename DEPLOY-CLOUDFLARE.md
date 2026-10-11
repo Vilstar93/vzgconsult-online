@@ -68,9 +68,50 @@ unter `/api/...` bereitgestellt – identische Pfade wie die Vercel-Varianten:
 
 - `functions/api/create-checkout-session.js` → `/api/create-checkout-session`
 - `functions/api/webhook.js` → `/api/webhook`
+- `functions/api/buy-handbook.js` → `/api/buy-handbook` (Kauf des Ratgebers)
+- `functions/api/download.js` → `/api/download` (geprüfter PDF-Download)
 
 Das Buchungsformular (`termin.html`) nutzt weiterhin
 `data-checkout-url="/api/create-checkout-session"` – keine Änderung nötig.
+
+## 3a. Digitaler Ratgeber (Sofort-Download, 199 €)
+
+Der Energie-Ratgeber wird als digitales Produkt verkauft. Ablauf:
+
+1. Auf `ratgeber.html` erzeugt `/api/buy-handbook` eine Bestellung und einen
+   Paypercut-Checkout. Die Bestell-ID steht in `success_url` und
+   `client_reference_id`.
+2. Die Bestellung wird in KV (`ORDERS`) unter `order:<id>` als `pending`
+   gespeichert.
+3. Nach der Zahlung landet der Kunde auf `download.html?order=<id>`. Die
+   Funktion `/api/download` prüft die Zahlung **serverseitig** bei Paypercut
+   (`payment_status === "paid"`) und liefert erst dann das PDF aus KV
+   (`file:handbook-energie-ratgeber.pdf`).
+
+> **Wichtig:** Paypercut ersetzt `{CHECKOUT_SESSION_ID}` im `success_url`
+> **nicht**. Deshalb wird die Bestell-ID vorab erzeugt und selbst mitgegeben.
+
+### KV-Namespace und Binding
+
+- Namespace: **`vzg-orders`** (`65312150dfd546a7bd947f9a8d42f262`)
+- Binding: **`ORDERS`** (Production und Preview)
+
+### PDF hochladen / ersetzen
+
+Das PDF liegt **nicht** im Repository (siehe `.gitignore`, Ordner `private/`).
+Nach einer Änderung neu hochladen:
+
+```bash
+curl -X PUT \
+  "https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/storage/kv/namespaces/<NAMESPACE_ID>/values/file:handbook-energie-ratgeber.pdf" \
+  -H "Authorization: Bearer <CLOUDFLARE_API_TOKEN>" \
+  -H "Content-Type: application/pdf" \
+  --data-binary @private/handbook-energie-ratgeber.pdf
+```
+
+Preis und Produktdaten stehen in `src/data/products.js` (Website) und
+`functions/api/_products.js` (Server). Beide müssen übereinstimmen.
+
 
 ## 4. Webhook im Paypercut-Dashboard
 

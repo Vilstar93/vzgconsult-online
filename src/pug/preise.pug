@@ -36,6 +36,18 @@ html(lang='de')
 
         section.page-section
             .container
+                .text-center.mb-5
+                    h2.section-heading.mb-3
+                        span.section-heading-upper Digitaler Ratgeber
+                        span.section-heading-lower Sofort als PDF
+                    p.mb-0
+                        | Kein Termin nötig – unser Ratgeber liefert das Wissen direkt zum Herunterladen.
+                .row.g-4.justify-content-center
+                    each product in products
+                        +productCard(product)
+
+        section.page-section
+            .container
                 .row
                     .col-lg-8.mx-auto
                         .bg-faded.rounded.p-5

@@ -16,3 +16,19 @@ mixin priceCard(item)
                         each feature in item.features
                             li= feature
                 a.btn.btn-primary.btn-lg.w-100.price-cta(href='termin.html?service=' + encodeURIComponent(item.name), data-service=item.name, data-price=item.price) Termin buchen
+
+//- Generates the card for a digital product (see src/data/products.js).
+mixin productCard(product)
+    .col-lg-6
+        .price-card.bg-faded.rounded.h-100.d-flex.flex-column.price-card-digital
+            .price-card-body.p-4.d-flex.flex-column.h-100
+                span.badge.price-badge.mb-2 Digitaler Download
+                h3.h5.text-uppercase.mb-1= product.shortName
+                p.price-duration.text-muted.small.mb-3= product.pages + ' Seiten · ' + product.language
+                p.price-amount.mb-3
+                    span.price-value= product.price
+                p.flex-grow-1= product.description
+                ul.price-features.small.mb-4
+                    each highlight in product.highlights
+                        li= highlight
+                a.btn.btn-primary.btn-lg.w-100.price-cta(href='ratgeber.html') Mehr erfahren

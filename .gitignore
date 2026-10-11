@@ -4,3 +4,6 @@ server/node_modules
 server/.env
 editor/node_modules
 editor/.env
+
+# Privater Inhalt: Der Ratgeber wird über Cloudflare KV ausgeliefert, nicht aus dem Repo.
+private/

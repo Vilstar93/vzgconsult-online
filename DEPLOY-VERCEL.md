@@ -1,0 +1,165 @@
+# Deployment auf Vercel – Schritt für Schritt (VZG Consult)
+
+Diese Anleitung führt von „Code liegt auf GitHub" bis „Live-Site mit eigener
+Domain, bereit zur Prüfung durch Paypercut".
+
+> **Wichtig:** Ein Repository und ein Vercel-Konto müssen von **Ihnen** angelegt
+> werden (Login/2FA). Der Agent kann das nicht automatisiert tun. Danach ist der
+> Rest in wenigen Minuten erledigt.
+
+---
+
+## 1. Repository und Code hochladen
+
+Das Repository ist bereits angelegt und als Remote verbunden:
+
+- **Repository:** https://github.com/Vilstar93/vzgconsult-online
+- **Remote:** `origin` → `https://github.com/Vilstar93/vzgconsult-online.git`
+- **Branch:** `main` (der Code ist bereits hochgeladen; weitere Änderungen per
+  `git push origin main` oder über den Button „🚀 Veröffentlichen" im Editor)
+
+Aktualisierungen hochladen, im Projektordner:
+
+```bash
+git push origin main
+```
+
+> Hinweis: Beim Push wird `.github/workflows/` bewusst übersprungen, da das
+> verwendete Token keinen `workflow`-Scope besitzt. Für den Live-Betrieb über
+> Vercel ist das nicht nötig.
+
+Falls Sie stattdessen ein neues Repository anlegen möchten:
+
+```bash
+gh repo create vzgconsult-online --public --source=. --remote=origin --push
+```
+
+---
+
+## 2. Projekt mit Vercel verbinden
+
+1. https://vercel.com/new öffnen und mit GitHub anmelden.
+2. Das Repository `Vilstar93/vzgconsult-online` importieren.
+3. **Einstellungen im Import-Dialog (genau so lassen):**
+
+   | Feld | Wert |
+   | --- | --- |
+   | Framework Preset | **Other** (nicht „Express") |
+   | **Root Directory** | **leer lassen** (nicht auf `server` setzen!) |
+   | Build Command | leer lassen (kommt aus `vercel.json`: `npm run build`) |
+   | Output Directory | leer lassen (kommt aus `vercel.json`: `dist`) |
+   | Install Command | Standard |
+
+   > **Warum Root Directory leer?** Das Projekt liefert sowohl die statische
+   > Website (`dist/`) als auch die Serverless-Functions in `api/` aus. Mit
+   > `Root Directory = server` würde nur der Express-Server gebaut – dieser
+   > benötigt aber Dateien außerhalb des Ordners (`../src/data/prices.js`,
+   > `../dist`) und würde fehlschlagen. Der Express-Server in `server/` ist nur
+   > für externes Hosting (Render/Railway) gedacht.
+
+4. **Environment Variables** (siehe Abschnitt 4) direkt eintragen.
+5. Auf **Deploy** klicken. Nach ~1 Minute ist die Site unter
+   `https://vzgconsult-online.vercel.app` live.
+6. Prüfen: Startseite, `/preise.html`, `/termin.html` sowie
+   `POST /api/create-checkout-session` (Demo-Modus ohne Schlüssel).
+
+
+---
+
+## 3. Eigene Domain verbinden (vzgconsult.online)
+
+1. Im Vercel-Projekt: **Settings → Domains → Add**.
+2. `vzgconsult.online` und `www.vzgconsult.online` hinzufügen.
+3. Vercel zeigt die nötigen DNS-Einträge. Bei Ihrem Domain-Anbieter eintragen:
+   - **A** `@` → `76.76.21.21`
+   - **CNAME** `www` → `cname.vercel-dns.com`
+   (oder die von Vercel aktuell angezeigten Werte übernehmen.)
+4. Nach der DNS-Prüfung stellt Vercel automatisch ein **HTTPS-Zertifikat** aus.
+
+---
+
+## 4. Zahlungen aktivieren (Umgebungsvariablen)
+
+Im Vercel-Projekt: **Settings → Environment Variables** (für „Production"):
+
+| Name | Wert |
+| --- | --- |
+| `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
+| `PAYPERCUT_SECRET_KEY` | Ihr geheimer Paypercut-Schlüssel |
+| `PAYPERCUT_WEBHOOK_SECRET` | Ihr Paypercut-Webhook-Secret |
+| `PUBLIC_BASE_URL` | `https://vzgconsult-online.vercel.app` (später die Domain) |
+| `STRIPE_SECRET_KEY` | nur bei Stripe |
+| `STRIPE_WEBHOOK_SECRET` | nur bei Stripe |
+
+> **`PORT` nicht setzen** – Vercel vergibt den Port selbst.
+
+Danach **Redeploy** auslösen (Deployments → … → Redeploy), damit die Variablen
+greifen. Die Zahlungslogik liegt als Vercel-Serverless-Function in
+`api/create-checkout-session.js` (Checkout) und `api/webhook.js` (Bestätigung)
+und wird automatisch bereitgestellt.
+
+### Paypercut – technische Details (verifiziert)
+
+Die Checkout-Funktion nutzt die Paypercut-API:
+
+- **Endpunkt:** `POST https://api.paypercut.io/v1/checkouts` mit
+  `Authorization: Bearer <PAYPERCUT_SECRET_KEY>`
+- **Bezahlseite:** `ui_mode: "hosted"` – die Antwort enthält `url`
+  (`https://buy.paypercut.io/c/...`); der Kunde wird dorthin weitergeleitet.
+- **Währung:** `currency: "EUR"` (Großbuchstaben, Pflicht).
+- **Beträge:** `line_items[].price_data.unit_amount` in Cent (z. B. `4900` = 49,00 €).
+
+**Testbetrieb:** Mit Testschlüsseln (`sk_test_…`, `pk_test_…`) läuft alles im
+Sandbox-Modus (`livemode: false`) – es wird kein echtes Geld bewegt. Für den
+Live-Betrieb die `sk_live_…`-Schlüssel als `PAYPERCUT_SECRET_KEY` hinterlegen.
+Der „publishable key" (`pk_…`) wird **nicht** benötigt, da die Bezahlseite
+vollständig von Paypercut gehostet wird.
+
+---
+
+## 5. Paypercut-Konto beantragen und Website zur Prüfung einreichen
+
+1. Konto erstellen: https://dashboard.paypercut.io/register (EU-Unternehmen,
+   Deutschland ist unterstützt).
+2. Unternehmensdaten und Bankkonto (IBAN) hinterlegen, KYC abschließen.
+3. Bei der Antragstellung als **Website** angeben:
+   `https://www.vzgconsult.online`
+4. Prüfungsrelevante Seiten sind bereits vorhanden:
+   - **Impressum** (Anbieter, Inhaber, Steuernummer): `/impressum.html`
+   - **Datenschutzerklärung**: `/datenschutz.html`
+   - **AGB & Widerrufsbelehrung**: `/agb.html`
+   - **Preise/Leistungen**: `/preise.html`
+   - **Buchung/Checkout**: `/termin.html`
+5. Webhook im Paypercut-Dashboard auf
+   `https://www.vzgconsult.online/api/webhook` setzen.
+
+---
+
+## 6. Checkliste für die Paypercut-Prüfung
+
+- [ ] Live-Site über eigene Domain mit HTTPS erreichbar
+- [ ] Impressum vollständig (USt-IdNr. ergänzen, falls vorhanden)
+- [ ] Datenschutz inkl. Zahlungsdienstleister
+- [ ] AGB + Widerrufsbelehrung verlinkt und im Checkout akzeptiert
+- [ ] Preise klar ausgewiesen (netto zzgl. 19 % USt.)
+- [ ] Kontaktmöglichkeiten (Telefon, E-Mail) vorhanden
+- [ ] Checkout-Funktion erreichbar (Buchung → Zahlung)
+- [ ] Rückerstattungs-/Stornoregeln beschrieben (AGB Ziffer 4)
+
+---
+
+## Technische Hinweise
+
+- **Serverless statt Dauer-Server:** Auf Vercel läuft die Zahlungslogik als
+  Function in `api/`. Der separate Express-Server in `server/` bleibt für
+  eigenes Hosting (z. B. Render/Railway) erhalten.
+- **Der visuelle Editor (`editor/`) wird NICHT auf Vercel deployt.** Er ist ein
+  lokales Werkzeug, hängt vom gesamten Repository ab (führt `npm run build` aus,
+  schreibt nach `content/pages/`, `dist/`) und enthält ein Git-Push-Token. Er
+  läuft ausschließlich lokal über `cd editor && npm start`. Aus Sicherheitsgründen
+  sollte er nie öffentlich erreichbar sein.
+- **Statische Dateien** (`robots.txt`, `sitemap.xml`) liegen in `public/` und
+  werden beim Build nach `dist/` kopiert.
+- **Domain in Sitemap:** Nach dem Verbinden der Domain ggf.
+  `public/sitemap.xml` und `public/robots.txt` auf die endgültige Domain
+  anpassen.
