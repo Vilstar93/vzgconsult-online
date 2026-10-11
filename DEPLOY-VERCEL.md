@@ -9,26 +9,30 @@ Domain, bereit zur Prüfung durch Paypercut".
 
 ---
 
-## 1. Repository auf GitHub anlegen und Code hochladen
+## 1. Repository und Code hochladen
 
-Variante A – über die GitHub-Website:
+Das Repository ist bereits angelegt und als Remote verbunden:
 
-1. https://github.com/new öffnen.
-2. Name: `vzg-consult-website`, Sichtbarkeit: **Public** (Paypercut/Vercel
-   können dann prüfen), **kein** README anlegen.
-3. Auf „Create repository" klicken.
+- **Repository:** https://github.com/Vilstar93/vzgconsult-online
+- **Remote:** `origin` → `https://github.com/Vilstar93/vzgconsult-online.git`
+- **Branch:** `main` (der Remote-Branch `main` ist bereits in die lokale
+  Historie eingebunden – der Push ist ein einfacher Fast-Forward)
 
-Dann im Projektordner (einmalig, Pfad ggf. anpassen):
+Den Code hochladen (einmalig), im Projektordner:
 
 ```bash
-git remote add origin https://github.com/<IHR-USER>/vzg-consult-website.git
-git push -u origin master
+git push -u origin main
 ```
 
-Variante B – mit der GitHub CLI (falls installiert und eingeloggt):
+> Hinweis: Der automatisierte Agent hat hier nur **Lesezugriff** auf das
+> Repository. Der Push muss daher von Ihnen (mit Ihrem GitHub-Login) ausgeführt
+> werden. Alternativ laden Sie das Projekt als ZIP über die GitHub-Oberfläche
+> hoch.
+
+Falls Sie stattdessen ein neues Repository anlegen möchten:
 
 ```bash
-gh repo create vzg-consult-website --public --source=. --remote=origin --push
+gh repo create vzgconsult-online --public --source=. --remote=origin --push
 ```
 
 ---
@@ -36,7 +40,7 @@ gh repo create vzg-consult-website --public --source=. --remote=origin --push
 ## 2. Projekt mit Vercel verbinden
 
 1. https://vercel.com/new öffnen und mit GitHub anmelden.
-2. Das Repository `vzg-consult-website` importieren.
+2. Das Repository `Vilstar93/vzgconsult-online` importieren.
 3. Vercel erkennt die Einstellungen aus `vercel.json` automatisch:
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
