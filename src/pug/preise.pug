@@ -1,0 +1,76 @@
+doctype html
+html(lang='de')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='Preise und Pakete von VZG Consult: Energieberatung, Tarif-Check, Wechsel-Service sowie Kundenbetreuung und Business-Paket. Online buchen und sicher bezahlen.')
+        meta(name='author', content='VZG Consult')
+
+        title Preise – VZG Consult
+
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        include includes/css
+
+    body
+
+        include includes/header
+
+        include includes/navbar
+
+        include includes/mixins
+
+        section.page-section
+            .container
+                .text-center.mb-5
+                    h1.section-heading.mb-3
+                        span.section-heading-upper Transparente Preise
+                        span.section-heading-lower Unsere Pakete
+                    p.mb-0
+                        | Wählen Sie das passende Paket und buchen Sie direkt online. Alle Preise sind Nettopreise in Euro zzgl. 19 % Umsatzsteuer.
+                .row.g-4
+                    each item in prices
+                        +priceCard(item)
+
+        section.page-section
+            .container
+                .row
+                    .col-lg-8.mx-auto
+                        .bg-faded.rounded.p-5
+                            h2.section-heading.mb-4
+                                span.section-heading-upper So einfach geht es
+                                span.section-heading-lower Buchen &amp; bezahlen
+                            ol.mb-0.payment-steps
+                                li
+                                    strong Paket wählen:
+                                    |  Klicken Sie bei Ihrem Wunschpaket auf „Termin buchen".
+                                li
+                                    strong Wunschtermin angeben:
+                                    |  Datum, Uhrzeit und Ihre Kontaktdaten erfassen.
+                                li
+                                    strong Online bezahlen:
+                                    |  Begleichung bequem per Karte, SEPA, Klarna, Apple Pay oder Google Pay – über unseren sicheren Zahlungsdienstleister.
+                                li
+                                    strong Bestätigung:
+                                    |  Sie erhalten sofort eine Bestätigung mit Ihrem Termin und Ihrer Rechnung.
+                            p.small.text-muted.mt-3.mb-0
+                                | Diese Preise sind Marktwerte für den Raum Deutschland und dienen als Orientierung – sie lassen sich jederzeit im Projekt anpassen.
+
+        section.page-section.cta
+            .container
+                .row
+                    .col-xl-9.mx-auto
+                        .cta-inner.bg-faded.text-center.rounded
+                            h2.section-heading.mb-4
+                                span.section-heading-upper Unsicher, welches Paket passt?
+                                span.section-heading-lower Wir beraten Sie gern
+                            p.mb-4
+                                | Rufen Sie uns an oder schreiben Sie uns – wir finden gemeinsam die passende Leistung für Ihre Situation.
+                            a.btn.btn-light.btn-xl.me-2.mb-2(href='kontakt.html') Kontakt aufnehmen
+                            a.btn.btn-outline-light.btn-xl.mb-2(href='tel:+4915750171967') 015750171967
+
+        include includes/footer
+
+        include includes/scripts

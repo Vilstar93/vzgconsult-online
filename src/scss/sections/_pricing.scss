@@ -1,0 +1,94 @@
+// Preise, Buchung & Zahlung – VZG Consult
+
+.price-card {
+    border: 1px solid rgba($secondary, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.75rem 1.75rem rgba($secondary, 0.12);
+    }
+}
+
+.price-card-featured {
+    border: 2px solid $primary;
+    box-shadow: 0 0.5rem 1.5rem rgba($primary, 0.18);
+}
+
+.price-badge {
+    align-self: flex-start;
+    background-color: $accent;
+    color: $white;
+    letter-spacing: 0.05em;
+}
+
+.price-amount {
+    color: $primary;
+}
+
+.price-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.price-duration {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.price-features {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+
+    li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.35rem;
+
+        &::before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            color: $accent;
+            font-weight: 700;
+        }
+    }
+}
+
+.nav-booking {
+    border-radius: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.booking-price {
+    background-color: rgba($primary, 0.08);
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+}
+
+.payment-methods {
+    li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.25rem;
+
+        &::before {
+            content: "\2713";
+            position: absolute;
+            left: 0;
+            color: $accent;
+            font-weight: 700;
+        }
+    }
+}
+
+.payment-steps {
+    padding-left: 1.25rem;
+
+    li {
+        margin-bottom: 0.75rem;
+    }
+}

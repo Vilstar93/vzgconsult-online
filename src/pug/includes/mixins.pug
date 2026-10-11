@@ -1,0 +1,18 @@
+//- Generates the price card grid. Items are injected at build time via the
+//- `prices` variable in src/data/prices.js (see scripts/build-pug.js).
+mixin priceCard(item)
+    .col-lg-4.col-md-6
+        .price-card.bg-faded.rounded.h-100.d-flex.flex-column(class=(item.featured ? 'price-card-featured' : ''))
+            .price-card-body.p-4.d-flex.flex-column.h-100
+                if item.featured
+                    span.badge.price-badge.mb-2 Empfohlen
+                h3.h5.text-uppercase.mb-1= item.name
+                p.price-duration.text-muted.small.mb-3= item.duration
+                p.price-amount.mb-3
+                    span.price-value= item.price
+                p.flex-grow-1= item.description
+                if item.features
+                    ul.price-features.small.mb-4
+                        each feature in item.features
+                            li= feature
+                a.btn.btn-primary.btn-lg.w-100.price-cta(href='termin.html?service=' + encodeURIComponent(item.name), data-service=item.name, data-price=item.price) Termin buchen

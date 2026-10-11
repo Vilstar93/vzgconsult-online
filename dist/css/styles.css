@@ -11096,6 +11096,92 @@ a {
   padding-left: 1.25rem;
 }
 
+.price-card {
+  border: 1px solid rgba(13, 33, 55, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.75rem rgba(13, 33, 55, 0.12);
+}
+
+.price-card-featured {
+  border: 2px solid #1c6ea4;
+  box-shadow: 0 0.5rem 1.5rem rgba(28, 110, 164, 0.18);
+}
+
+.price-badge {
+  align-self: flex-start;
+  background-color: #57b894;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.price-amount {
+  color: #1c6ea4;
+}
+
+.price-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.price-duration {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.price-features {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.price-features li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+.price-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #57b894;
+  font-weight: 700;
+}
+
+.nav-booking {
+  border-radius: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.booking-price {
+  background-color: rgba(28, 110, 164, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+}
+
+.payment-methods li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+.payment-methods li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #57b894;
+  font-weight: 700;
+}
+
+.payment-steps {
+  padding-left: 1.25rem;
+}
+.payment-steps li {
+  margin-bottom: 0.75rem;
+}
+
 @media (min-width: 992px) {
   .product-item .product-item-title {
     position: relative;

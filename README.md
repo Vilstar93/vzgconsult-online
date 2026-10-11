@@ -10,6 +10,8 @@ Statische Marketing-Website für **VZG Consult**, Hospitalstraße 30, 66798 Wall
 | Startseite | `index.html` | Überblick, drei Kernleistungen, Versprechen |
 | Leistungen | `leistungen.html` | Energielösungen, Kundenservice & Callcenter, Kundenbindung & Marketing |
 | Über uns | `ueber-uns.html` | Erfahrung, Philosophie, Herangehensweise |
+| Preise | `preise.html` | Bezahlte Leistungen und Pakete mit Preisen |
+| Termin buchen | `termin.html` | Service-Booking: Leistung, Termin, Zahlung |
 | Kontakt | `kontakt.html` | Kontaktdaten, Öffnungszeiten, Formular, Karte |
 | Impressum | `impressum.html` | Pflichtangaben (Vorlage – bitte prüfen/ergänzen) |
 | Datenschutz | `datenschutz.html` | Datenschutzerklärung (Vorlage – bitte anpassen) |
@@ -41,6 +43,9 @@ GitHub Pages, …) veröffentlicht werden.
 - **Kontaktformular**: Das Formular nutzt aktuell einen Platzhalter-Endpunkt
   (`formspree.io/f/vzgconsult`). Eine eigene `action`-URL oder ein
   Server-Endpunkt eintragen.
+- **Online-Zahlung & Terminal**: siehe `PAYMENTS.md` – Zahlungsanbieter
+  anbinden, Auszahlungen und Terminal einrichten. Ohne Konfiguration läuft die
+  Buchung im Demo-Modus (nur Bestätigung, keine Zahlung).
 - **Bilder**: Die verwendeten Fotos stammen von Unsplash (Unsplash-Lizenz).
   Eigene Bilder in `src/assets/img/` ersetzen.
 

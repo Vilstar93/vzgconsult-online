@@ -32,10 +32,12 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Startseite</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="leistungen.html">Leistungen</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="ueber-uns.html">Über uns</a></li>
-                        <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="kontakt.html">Kontakt</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="index.html">Startseite</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="leistungen.html">Leistungen</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="preise.html">Preise</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="ueber-uns.html">Über uns</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="kontakt.html">Kontakt</a></li>
+                        <li class="nav-item px-lg-3"><a class="btn btn-primary btn-sm mt-2 mt-lg-0 nav-booking" href="termin.html">Termin buchen</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,6 +74,8 @@
                             <p>Wenn Sie uns kontaktieren, verarbeiten wir die von Ihnen mitgeteilten Daten zur Bearbeitung Ihres Anliegens. Bitte beachten Sie, dass bei einer Kontaktaufnahme über WhatsApp Daten durch den Anbieter WhatsApp verarbeitet werden. Weitere Informationen finden Sie in der Datenschutzerklärung von WhatsApp.</p>
                             <h2>Hosting</h2>
                             <p>Diese Website wird bei einem externen Dienstleister gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Der Einsatz des Hosters erfolgt zum Zwecke einer sicheren, schnellen und zuverlässigen Bereitstellung unseres Online-Angebots (Art. 6 Abs. 1 lit. f DSGVO).</p>
+                            <h2>Zahlungsdienstleister</h2>
+                            <p>Für die Abwicklung von Online-Zahlungen nutzen wir einen externen Zahlungsdienstleister (z. B. Stripe). Wenn Sie eine bezahlte Leistung online buchen, werden die zur Zahlungsabwicklung erforderlichen Daten (z. B. Name, E-Mail-Adresse, Zahlungsdaten) an den Zahlungsdienstleister übermittelt. Die Verarbeitung erfolgt zur Erfüllung des Vertrags (Art. 6 Abs. 1 lit. b DSGVO). Weitere Informationen entnehmen Sie der Datenschutzerklärung des jeweiligen Anbieters.</p>
                             <h2>Ihre Rechte</h2>
                             <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf:</p>
                             <ul>
@@ -112,6 +116,10 @@
                         </p>
                     </div>
                 </div>
+                <p class="mb-2 small">
+                    <a class="text-faded me-3" href="preise.html">Preise</a>
+                    <a class="text-faded me-3" href="termin.html">Termin buchen</a>
+                </p>
                 <p class="m-0 small">
                     <a class="text-faded me-3" href="impressum.html">Impressum</a>
                     <a class="text-faded me-3" href="datenschutz.html">Datenschutz</a>
@@ -123,5 +131,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <!-- Buchung & Zahlung-->
+        <script src="js/checkout.js"></script>
     </body>
 </html>

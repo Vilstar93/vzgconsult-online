@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Buchen Sie online einen Termin bei VZG Consult: Energieberatung, Tarif-Check, Wechsel-Service oder Business-Paket. Wunschtermin wählen und sicher online bezahlen." />
+        <meta name="author" content="VZG Consult" />
+        <title>Termin buchen – VZG Consult</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Google fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <h1 class="site-heading text-center text-faded d-none d-lg-block">
+                <span class="site-heading-upper text-primary mb-3">Ihr Partner für günstigste Energie</span>
+                <span class="site-heading-lower">VZG Consult</span>
+            </h1>
+        </header>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">
+                    <span class="text-primary">VZG</span>
+                    Consult
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation umschalten"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="index.html">Startseite</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="leistungen.html">Leistungen</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="preise.html">Preise</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="ueber-uns.html">Über uns</a></li>
+                        <li class="nav-item px-lg-3"><a class="nav-link text-uppercase" href="kontakt.html">Kontakt</a></li>
+                        <li class="nav-item px-lg-3"><a class="btn btn-primary btn-sm mt-2 mt-lg-0 nav-booking" href="termin.html">Termin buchen</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="page-section">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-5">
+                        <h1 class="section-heading mb-4">
+                            <span class="section-heading-upper">Service booking</span>
+                            <span class="section-heading-lower">Termin buchen</span>
+                        </h1>
+                        <p>Wählen Sie Ihre Leistung, Ihren Wunschtermin und bezahlen Sie bequem online. Nach der Buchung erhalten Sie eine Bestätigung per E-Mail.</p>
+                        <div class="bg-faded rounded p-4 mb-4">
+                            <h2 class="h6 text-uppercase mb-3">Bezahlung</h2>
+                            <p class="small mb-2">Die Zahlung erfolgt sicher über unseren Zahlungsdienstleister. Folgende Zahlungsarten stehen zur Verfügung:</p>
+                            <ul class="list-unstyled small mb-0 payment-methods">
+                                <li>Kredit- und Debitkarte</li>
+                                <li>SEPA-Lastschrift</li>
+                                <li>Klarna (Rechnung / Raten)</li>
+                                <li>Apple Pay &amp; Google Pay</li>
+                            </ul>
+                        </div>
+                        <p class="small text-muted mb-0">Alternativ können Sie die Zahlung auch nach der Terminbestätigung per Rechnung begleichen.</p>
+                    </div>
+                    <div class="col-lg-7">
+                        <form class="bg-faded rounded p-4" id="bookingForm" action="#" method="post" data-checkout="stripe" data-thank-you="#buchung-bestaetigung">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label" for="service">Leistung</label>
+                                    <select class="form-select" id="service" name="service" required>
+                                        <option value="Erstberatung Energie" data-price="49 €">Erstberatung Energie – 49 €</option>
+                                        <option value="Tarif-Check &amp; Optimierung" data-price="99 €">Tarif-Check &amp; Optimierung – 99 €</option>
+                                        <option value="Wechsel-Service" data-price="149 €">Wechsel-Service – 149 €</option>
+                                        <option value="Vor-Ort-Energieberatung" data-price="249 €">Vor-Ort-Energieberatung – 249 €</option>
+                                        <option value="Kundenbetreuung &amp; Callcenter-Service" data-price="39 € / Std.">Kundenbetreuung &amp; Callcenter-Service – 39 € / Std.</option>
+                                        <option value="Business-Paket" data-price="599 € / Monat">Business-Paket – 599 € / Monat</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <div class="booking-price d-flex justify-content-between align-items-center">
+                                        <span class="text-uppercase small fw-bold">Preis</span>
+                                        <span class="fw-bold" id="selectedPrice">49 €</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="date">Wunschdatum</label>
+                                    <input class="form-control" id="date" type="date" name="date" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="time">Uhrzeit</label>
+                                    <select class="form-select" id="time" name="time" required>
+                                        <option value="09:00">09:00</option>
+                                        <option value="10:30">10:30</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="14:30">14:30</option>
+                                        <option value="16:00">16:00</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="name">Name</label>
+                                    <input class="form-control" id="name" type="text" name="name" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="email">E-Mail</label>
+                                    <input class="form-control" id="email" type="email" name="email" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="phone">Telefon</label>
+                                    <input class="form-control" id="phone" type="tel" name="phone" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label" for="address">PLZ / Ort</label>
+                                    <input class="form-control" id="address" type="text" name="address" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="notes">Nachricht / Zählernummer (optional)</label>
+                                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Zahlungsart</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="pay-now" type="radio" name="payment" value="online" checked />
+                                        <label class="form-check-label" for="pay-now">Jetzt online bezahlen</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="pay-later" type="radio" name="payment" value="invoice" />
+                                        <label class="form-check-label" for="pay-later">Zahlung nach Bestätigung</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="small text-muted mb-2">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer Datenschutzerklärung zu.</p>
+                                    <button class="btn btn-primary btn-xl w-100" type="submit">Verbindlich buchen</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="mt-4" id="buchung-bestaetigung">
+                            <div class="alert alert-success d-none" role="alert">
+                                <strong>Vielen Dank!</strong>
+                                Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="bg-faded rounded p-5">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-upper">Terminorganisation</span>
+                                <span class="section-heading-lower">Wie es weitergeht</span>
+                            </h2>
+                            <p class="mb-0">Nach Ihrer Buchung erhalten Sie eine Kalender-Einladung. Für Firmen- und Großkunden koordinieren wir Termine individuell – sprechen Sie uns einfach an.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer text-faded text-center py-5">
+            <div class="container">
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-8">
+                        <p class="mb-2">
+                            <strong>VZG Consult</strong>
+                            – Ihr Partner für günstigste Energie
+                        </p>
+                        <p class="mb-2 small">Hospitalstraße 30, 66798 Wallerfangen, Deutschland</p>
+                        <p class="mb-3 small">
+                            <a class="text-faded me-3" href="tel:+4915750171967">+49 1575 0171967</a>
+                            <a class="text-faded me-3" href="mailto:info@vzgconsult.eu">info@vzgconsult.eu</a>
+                        </p>
+                        <p class="mb-0">
+                            <a class="text-faded me-3" href="https://www.facebook.com/vzg.consult" target="_blank" rel="noopener" aria-label="VZG Consult auf Facebook">Facebook</a>
+                            <a class="text-faded me-3" href="https://www.linkedin.com/in/vilislav-gitsov-2a304b341/" target="_blank" rel="noopener" aria-label="VZG Consult auf LinkedIn">LinkedIn</a>
+                            <a class="text-faded me-3" href="https://wa.me/4915750171967" target="_blank" rel="noopener" aria-label="VZG Consult über WhatsApp kontaktieren">WhatsApp</a>
+                        </p>
+                    </div>
+                </div>
+                <p class="mb-2 small">
+                    <a class="text-faded me-3" href="preise.html">Preise</a>
+                    <a class="text-faded me-3" href="termin.html">Termin buchen</a>
+                </p>
+                <p class="m-0 small">
+                    <a class="text-faded me-3" href="impressum.html">Impressum</a>
+                    <a class="text-faded me-3" href="datenschutz.html">Datenschutz</a>
+                </p>
+                <p class="mt-3 mb-0 small">Copyright &copy; VZG Consult 2026</p>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <!-- Buchung & Zahlung-->
+        <script src="js/checkout.js"></script>
+    </body>
+</html>

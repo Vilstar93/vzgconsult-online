@@ -1,0 +1,112 @@
+doctype html
+html(lang='de')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='Buchen Sie online einen Termin bei VZG Consult: Energieberatung, Tarif-Check, Wechsel-Service oder Business-Paket. Wunschtermin wählen und sicher online bezahlen.')
+        meta(name='author', content='VZG Consult')
+
+        title Termin buchen – VZG Consult
+
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        include includes/css
+
+    body
+
+        include includes/header
+
+        include includes/navbar
+
+        section.page-section
+            .container
+                .row.g-5
+                    .col-lg-5
+                        h1.section-heading.mb-4
+                            span.section-heading-upper Service booking
+                            span.section-heading-lower Termin buchen
+                        p
+                            | Wählen Sie Ihre Leistung, Ihren Wunschtermin und bezahlen Sie bequem online. Nach der Buchung erhalten Sie eine Bestätigung per E-Mail.
+                        .bg-faded.rounded.p-4.mb-4
+                            h2.h6.text-uppercase.mb-3 Bezahlung
+                            p.small.mb-2
+                                | Die Zahlung erfolgt sicher über unseren Zahlungsdienstleister. Folgende Zahlungsarten stehen zur Verfügung:
+                            ul.list-unstyled.small.mb-0.payment-methods
+                                li Kredit- und Debitkarte
+                                li SEPA-Lastschrift
+                                li Klarna (Rechnung / Raten)
+                                li Apple Pay &amp; Google Pay
+                        p.small.text-muted.mb-0
+                            | Alternativ können Sie die Zahlung auch nach der Terminbestätigung per Rechnung begleichen.
+
+                    .col-lg-7
+                        form#bookingForm.bg-faded.rounded.p-4(action='#', method='post', data-checkout='stripe', data-thank-you='#buchung-bestaetigung')
+                            .row.g-3
+                                .col-12
+                                    label.form-label(for='service') Leistung
+                                    select#service.form-select(name='service', required)
+                                        each item in prices
+                                            option(value=item.name, data-price=item.price)= item.name + ' – ' + item.price
+                                .col-12
+                                    .booking-price.d-flex.justify-content-between.align-items-center
+                                        span.text-uppercase.small.fw-bold Preis
+                                        span#selectedPrice.fw-bold= prices[0].price
+                                .col-md-6
+                                    label.form-label(for='date') Wunschdatum
+                                    input#date.form-control(type='date', name='date', required)
+                                .col-md-6
+                                    label.form-label(for='time') Uhrzeit
+                                    select#time.form-select(name='time', required)
+                                        option(value='09:00') 09:00
+                                        option(value='10:30') 10:30
+                                        option(value='13:00') 13:00
+                                        option(value='14:30') 14:30
+                                        option(value='16:00') 16:00
+                                .col-md-6
+                                    label.form-label(for='name') Name
+                                    input#name.form-control(type='text', name='name', required)
+                                .col-md-6
+                                    label.form-label(for='email') E-Mail
+                                    input#email.form-control(type='email', name='email', required)
+                                .col-md-6
+                                    label.form-label(for='phone') Telefon
+                                    input#phone.form-control(type='tel', name='phone', required)
+                                .col-md-6
+                                    label.form-label(for='address') PLZ / Ort
+                                    input#address.form-control(type='text', name='address')
+                                .col-12
+                                    label.form-label(for='notes') Nachricht / Zählernummer (optional)
+                                    textarea#notes.form-control(name='notes', rows='3')
+                                .col-12
+                                    label.form-label Zahlungsart
+                                    .form-check
+                                        input#pay-now.form-check-input(type='radio', name='payment', value='online', checked)
+                                        label.form-check-label(for='pay-now') Jetzt online bezahlen
+                                    .form-check
+                                        input#pay-later.form-check-input(type='radio', name='payment', value='invoice')
+                                        label.form-check-label(for='pay-later') Zahlung nach Bestätigung
+                                .col-12
+                                    p.small.text-muted.mb-2
+                                        | Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer Datenschutzerklärung zu.
+                                    button.btn.btn-primary.btn-xl.w-100(type='submit') Verbindlich buchen
+                        #buchung-bestaetigung.mt-4
+                            .alert.alert-success.d-none(role='alert')
+                                strong Vielen Dank!
+                                |  Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.
+
+        section.page-section
+            .container
+                .row
+                    .col-lg-8.mx-auto
+                        .bg-faded.rounded.p-5
+                            h2.section-heading.mb-4
+                                span.section-heading-upper Terminorganisation
+                                span.section-heading-lower Wie es weitergeht
+                            p.mb-0
+                                | Nach Ihrer Buchung erhalten Sie eine Kalender-Einladung. Für Firmen- und Großkunden koordinieren wir Termine individuell – sprechen Sie uns einfach an.
+
+        include includes/footer
+
+        include includes/scripts
