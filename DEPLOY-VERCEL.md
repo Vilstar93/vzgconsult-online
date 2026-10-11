@@ -15,19 +15,18 @@ Das Repository ist bereits angelegt und als Remote verbunden:
 
 - **Repository:** https://github.com/Vilstar93/vzgconsult-online
 - **Remote:** `origin` → `https://github.com/Vilstar93/vzgconsult-online.git`
-- **Branch:** `main` (der Remote-Branch `main` ist bereits in die lokale
-  Historie eingebunden – der Push ist ein einfacher Fast-Forward)
+- **Branch:** `main` (der Code ist bereits hochgeladen; weitere Änderungen per
+  `git push origin main` oder über den Button „🚀 Veröffentlichen" im Editor)
 
-Den Code hochladen (einmalig), im Projektordner:
+Aktualisierungen hochladen, im Projektordner:
 
 ```bash
-git push -u origin main
+git push origin main
 ```
 
-> Hinweis: Der automatisierte Agent hat hier nur **Lesezugriff** auf das
-> Repository. Der Push muss daher von Ihnen (mit Ihrem GitHub-Login) ausgeführt
-> werden. Alternativ laden Sie das Projekt als ZIP über die GitHub-Oberfläche
-> hoch.
+> Hinweis: Beim Push wird `.github/workflows/` bewusst übersprungen, da das
+> verwendete Token keinen `workflow`-Scope besitzt. Für den Live-Betrieb über
+> Vercel ist das nicht nötig.
 
 Falls Sie stattdessen ein neues Repository anlegen möchten:
 
