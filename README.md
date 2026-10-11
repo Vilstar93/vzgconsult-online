@@ -1,6 +1,6 @@
 # VZG Consult – Website
 
-Statische Marketing-Website für **VZG Consult**, Hospitalstr. 30, 66798 Wallerfangen
+Statische Marketing-Website für **VZG Consult**, Hospitalstraße 30, 66798 Wallerfangen
 – Ihr Partner für günstigste Energie.
 
 ## Inhalt
@@ -34,14 +34,13 @@ GitHub Pages, …) veröffentlicht werden.
 
 ## Vor der Veröffentlichung zu erledigen
 
-- **Impressum**: Umsatzsteuer-Identifikationsnummer ergänzen und Angaben
-  rechtlich prüfen lassen.
+- **Impressum**: Umsatzsteuer-Identifikationsnummer (USt-IdNr.) ergänzen
+  (Steuernummer ist bereits eingetragen) und Angaben rechtlich prüfen lassen.
 - **Datenschutz**: Erklärung an den tatsächlich eingesetzten Hoster, das
   Formular-Backend und die Karte anpassen.
 - **Kontaktformular**: Das Formular nutzt aktuell einen Platzhalter-Endpunkt
   (`formspree.io/f/vzgconsult`). Eine eigene `action`-URL oder ein
   Server-Endpunkt eintragen.
-- **E-Mail-Adresse**: `info@vzgconsult.de` als tatsächliche Adresse bestätigen.
 - **Bilder**: Die verwendeten Fotos stammen von Unsplash (Unsplash-Lizenz).
   Eigene Bilder in `src/assets/img/` ersetzen.
 
