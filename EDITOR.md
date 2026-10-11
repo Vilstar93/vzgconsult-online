@@ -43,6 +43,9 @@ npm start
   *Contents: Read and write*, oder Classic PAT mit `repo`).
 - `GIT_BRANCH` – Ziel-Branch (Standard: `main`).
 
+Statt Umgebungsvariablen können die Werte auch in **`editor/.env`** stehen
+(Vorlage: `editor/.env.example`). Diese Datei wird nicht in Git eingecheckt.
+
 > Ohne gesetztes `GIT_PUSH_TOKEN` bleibt der Button inaktiv und meldet
 > „Kein Schreib-Token gesetzt". Speichern/Neu-Bauen funktioniert trotzdem
 > lokal. Das Token wird nur an `git` weitergereicht (über einen
