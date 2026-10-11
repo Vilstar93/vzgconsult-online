@@ -17,6 +17,9 @@ const path = require('path');
 const multer = require('multer');
 const { execFile } = require('child_process');
 
+// editor/.env laden (GIT_PUSH_TOKEN, EDITOR_PASSWORD, ...) – optional.
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const CONTENT = path.join(ROOT, 'content', 'pages');

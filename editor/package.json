@@ -8,6 +8,7 @@
         "start": "node server.js"
     },
     "dependencies": {
+        "dotenv": "^18.0.7",
         "express": "^4.19.2",
         "multer": "^2.0.1"
     }
