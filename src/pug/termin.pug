@@ -88,8 +88,18 @@ html(lang='de')
                                         input#pay-later.form-check-input(type='radio', name='payment', value='invoice')
                                         label.form-check-label(for='pay-later') Zahlung nach Bestätigung
                                 .col-12
+                                    .form-check
+                                        input#agb.form-check-input(type='checkbox', name='agb', required)
+                                        label.form-check-label.small(for='agb')
+                                            | Ich habe die&nbsp;
+                                            a(href='agb.html', target='_blank') AGB
+                                            | &nbsp;und die&nbsp;
+                                            a(href='agb.html#widerruf', target='_blank') Widerrufsbelehrung
+                                            | &nbsp;gelesen und akzeptiere sie.
                                     p.small.text-muted.mb-2
-                                        | Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer Datenschutzerklärung zu.
+                                        | Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer&nbsp;
+                                        a(href='datenschutz.html') Datenschutzerklärung
+                                        | &nbsp;zu.
                                     button.btn.btn-primary.btn-xl.w-100(type='submit') Verbindlich buchen
                         #buchung-bestaetigung.mt-4
                             .alert.alert-success.d-none(role='alert')

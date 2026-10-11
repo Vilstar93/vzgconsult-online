@@ -8,4 +8,10 @@ module.exports = function renderAssets() {
     const destPath = upath.resolve(upath.dirname(__filename), '../dist/.');
     
     sh.cp('-R', sourcePath, destPath)
+
+    // Statische Dateien (robots.txt, sitemap.xml) aus public/ nach dist/ kopieren.
+    const publicPath = upath.resolve(upath.dirname(__filename), '../public');
+    if (fs.existsSync(publicPath)) {
+        sh.cp('-R', upath.join(publicPath, '*'), destPath)
+    }
 };

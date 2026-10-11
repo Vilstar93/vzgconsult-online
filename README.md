@@ -14,6 +14,7 @@ Statische Marketing-Website für **VZG Consult**, Hospitalstraße 30, 66798 Wall
 | Termin buchen | `termin.html` | Service-Booking: Leistung, Termin, Zahlung |
 | Kontakt | `kontakt.html` | Kontaktdaten, Öffnungszeiten, Formular, Karte |
 | Impressum | `impressum.html` | Pflichtangaben (Vorlage – bitte prüfen/ergänzen) |
+| AGB & Widerruf | `agb.html` | Allgemeine Geschäftsbedingungen + Widerrufsbelehrung |
 | Datenschutz | `datenschutz.html` | Datenschutzerklärung (Vorlage – bitte anpassen) |
 
 ## Technik
@@ -44,6 +45,12 @@ cd server && npm install && cp .env.example .env && npm start
 ```
 
 Siehe `PAYMENTS.md` (Einrichtung) und `PAYMENT-OPTIONS.md` (Anbietervergleich).
+
+## Deployment
+
+Für Vercel (empfohlen, inkl. Serverless-Checkout) siehe
+`DEPLOY-VERCEL.md`. Die Konfiguration liegt in `vercel.json`, die
+Checkout-Function in `api/create-checkout-session.js`.
 
 ## Vor der Veröffentlichung zu erledigen
 

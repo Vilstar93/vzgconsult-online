@@ -36,7 +36,8 @@
         "url": "https://github.com/StartBootstrap/startbootstrap-business-casual.git"
     },
     "dependencies": {
-        "bootstrap": "5.2.3"
+        "bootstrap": "5.2.3",
+        "stripe": "^16.0.0"
     },
     "devDependencies": {
         "autoprefixer": "10.4.14",
