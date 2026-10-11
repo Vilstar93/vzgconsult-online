@@ -207,11 +207,14 @@ app.post('/api/publish', (req, res) => {
         const msg = 'Inhalt über den visuellen Editor aktualisiert';
         git(['add', '-A'], (addErr) => {
             if (addErr) return res.json({ ok: false, message: 'git add fehlgeschlagen.' });
-            git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out) => {
-                if (commitErr && !/nothing to commit/.test(String(out))) {
-                    return res.json({ ok: false, message: 'git commit fehlgeschlagen.' });
-                }
-                afterCommit();
+            // Workflow-Dateien ausklammern: das Push-Token hat keinen `workflow`-Scope.
+            git(['reset', '-q', '--', '.github/workflows'], () => {
+                git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out) => {
+                    if (commitErr && !/nothing to commit/.test(String(out))) {
+                        return res.json({ ok: false, message: 'git commit fehlgeschlagen.' });
+                    }
+                    afterCommit();
+                });
             });
         });
     });
