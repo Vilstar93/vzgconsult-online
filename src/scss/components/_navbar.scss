@@ -45,4 +45,35 @@
             }
         }
     }
+
+    .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        .lang-btn {
+            background-color: transparent;
+            border: 1px solid fade-out($white, 0.6);
+            border-radius: 0.25rem;
+            color: fade-out($white, 0.35);
+            cursor: pointer;
+            font-family: $headings-font-family;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05rem;
+            line-height: 1;
+            padding: 0.35rem 0.5rem;
+
+            &:hover {
+                border-color: fade-out($white, 0.35);
+                color: $white;
+            }
+
+            &.active {
+                background-color: $primary;
+                border-color: $primary;
+                color: $white;
+            }
+        }
+    }
 }

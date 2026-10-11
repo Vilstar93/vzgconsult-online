@@ -14,4 +14,10 @@ module.exports = function renderAssets() {
     if (fs.existsSync(publicPath)) {
         sh.cp('-R', upath.join(publicPath, '*'), destPath)
     }
+
+    // Übersetzungsdateien (i18n) nach dist/i18n/ kopieren.
+    const i18nPath = upath.resolve(upath.dirname(__filename), '../src/i18n');
+    if (fs.existsSync(i18nPath)) {
+        sh.cp('-R', i18nPath, destPath)
+    }
 };
