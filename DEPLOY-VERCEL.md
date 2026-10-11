@@ -40,11 +40,29 @@ gh repo create vzgconsult-online --public --source=. --remote=origin --push
 
 1. https://vercel.com/new öffnen und mit GitHub anmelden.
 2. Das Repository `Vilstar93/vzgconsult-online` importieren.
-3. Vercel erkennt die Einstellungen aus `vercel.json` automatisch:
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-4. Auf **Deploy** klicken. Nach ~1 Minute ist die Site unter
-   `https://<projekt>.vercel.app` live.
+3. **Einstellungen im Import-Dialog (genau so lassen):**
+
+   | Feld | Wert |
+   | --- | --- |
+   | Framework Preset | **Other** (nicht „Express") |
+   | **Root Directory** | **leer lassen** (nicht auf `server` setzen!) |
+   | Build Command | leer lassen (kommt aus `vercel.json`: `npm run build`) |
+   | Output Directory | leer lassen (kommt aus `vercel.json`: `dist`) |
+   | Install Command | Standard |
+
+   > **Warum Root Directory leer?** Das Projekt liefert sowohl die statische
+   > Website (`dist/`) als auch die Serverless-Functions in `api/` aus. Mit
+   > `Root Directory = server` würde nur der Express-Server gebaut – dieser
+   > benötigt aber Dateien außerhalb des Ordners (`../src/data/prices.js`,
+   > `../dist`) und würde fehlschlagen. Der Express-Server in `server/` ist nur
+   > für externes Hosting (Render/Railway) gedacht.
+
+4. **Environment Variables** (siehe Abschnitt 4) direkt eintragen.
+5. Auf **Deploy** klicken. Nach ~1 Minute ist die Site unter
+   `https://vzgconsult-online.vercel.app` live.
+6. Prüfen: Startseite, `/preise.html`, `/termin.html` sowie
+   `POST /api/create-checkout-session` (Demo-Modus ohne Schlüssel).
+
 
 ---
 
@@ -69,12 +87,16 @@ Im Vercel-Projekt: **Settings → Environment Variables** (für „Production"):
 | `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
 | `PAYPERCUT_SECRET_KEY` | Ihr geheimer Paypercut-Schlüssel |
 | `PAYPERCUT_WEBHOOK_SECRET` | Ihr Paypercut-Webhook-Secret |
-| `PUBLIC_BASE_URL` | `https://www.vzgconsult.online` |
+| `PUBLIC_BASE_URL` | `https://vzgconsult-online.vercel.app` (später die Domain) |
 | `STRIPE_SECRET_KEY` | nur bei Stripe |
+| `STRIPE_WEBHOOK_SECRET` | nur bei Stripe |
+
+> **`PORT` nicht setzen** – Vercel vergibt den Port selbst.
 
 Danach **Redeploy** auslösen (Deployments → … → Redeploy), damit die Variablen
-greifen. Die Checkout-Logik liegt unter `api/create-checkout-session.js`
-(Vercel-Serverless-Function) und wird automatisch bereitgestellt.
+greifen. Die Zahlungslogik liegt als Vercel-Serverless-Function in
+`api/create-checkout-session.js` (Checkout) und `api/webhook.js` (Bestätigung)
+und wird automatisch bereitgestellt.
 
 ---
 
@@ -114,6 +136,11 @@ greifen. Die Checkout-Logik liegt unter `api/create-checkout-session.js`
 - **Serverless statt Dauer-Server:** Auf Vercel läuft die Zahlungslogik als
   Function in `api/`. Der separate Express-Server in `server/` bleibt für
   eigenes Hosting (z. B. Render/Railway) erhalten.
+- **Der visuelle Editor (`editor/`) wird NICHT auf Vercel deployt.** Er ist ein
+  lokales Werkzeug, hängt vom gesamten Repository ab (führt `npm run build` aus,
+  schreibt nach `content/pages/`, `dist/`) und enthält ein Git-Push-Token. Er
+  läuft ausschließlich lokal über `cd editor && npm start`. Aus Sicherheitsgründen
+  sollte er nie öffentlich erreichbar sein.
 - **Statische Dateien** (`robots.txt`, `sitemap.xml`) liegen in `public/` und
   werden beim Build nach `dist/` kopiert.
 - **Domain in Sitemap:** Nach dem Verbinden der Domain ggf.
