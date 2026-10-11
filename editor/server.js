@@ -154,6 +154,70 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     });
 });
 
+// --- Veröffentlichen: Änderungen nach GitHub pushen (löst Vercel-Deploy aus) ---
+// Benötigt ein Schreib-Token in der Umgebung: GIT_PUSH_TOKEN (oder GITHUB_TOKEN).
+const PUSH_BRANCH = process.env.GIT_BRANCH || 'main';
+const PUSH_TOKEN = process.env.GIT_PUSH_TOKEN || process.env.GITHUB_TOKEN || '';
+
+function git(args, cb) {
+    // Token wird über einen Credential-Helper aus der Umgebung gelesen,
+    // damit es NICHT in der Kommandozeile/Prozessliste auftaucht.
+    const helper = '!f() { echo username=x-access-token; echo password=$GIT_PUSH_TOKEN; }; f';
+    execFile(
+        'git',
+        ['-c', `credential.helper=${helper}`, ...args],
+        { cwd: ROOT, env: { ...process.env, GIT_PUSH_TOKEN: PUSH_TOKEN } },
+        cb
+    );
+}
+
+app.post('/api/publish', (req, res) => {
+    if (!PUSH_TOKEN) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Kein Schreib-Token gesetzt. Server mit GIT_PUSH_TOKEN=<token> starten.'
+        });
+    }
+
+    git(['status', '--porcelain'], (err, statusOut) => {
+        if (err) return res.json({ ok: false, message: 'git status fehlgeschlagen.' });
+        const changed = String(statusOut).trim();
+
+        const afterCommit = () => {
+            git(['push', 'origin', `HEAD:${PUSH_BRANCH}`], (pushErr, out, pushErrOut) => {
+                if (pushErr) {
+                    console.error('[publish]', pushErrOut || pushErr.message);
+                    return res.json({
+                        ok: false,
+                        message: 'Push fehlgeschlagen (Token-Rechte prüfen).',
+                        detail: String(pushErrOut || pushErr.message).slice(0, 400)
+                    });
+                }
+                res.json({ ok: true, message: `Veröffentlicht nach GitHub (${PUSH_BRANCH}).`, detail: String(out || pushErrOut).trim() });
+            });
+        };
+
+        if (!changed) {
+            return afterCommit();
+        }
+
+        const msg = 'Inhalt über den visuellen Editor aktualisiert';
+        git(['add', '-A'], (addErr) => {
+            if (addErr) return res.json({ ok: false, message: 'git add fehlgeschlagen.' });
+            git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out) => {
+                if (commitErr && !/nothing to commit/.test(String(out))) {
+                    return res.json({ ok: false, message: 'git commit fehlgeschlagen.' });
+                }
+                afterCommit();
+            });
+        });
+    });
+});
+
+app.get('/api/publish/status', (req, res) => {
+    res.json({ branch: PUSH_BRANCH, token: Boolean(PUSH_TOKEN) });
+});
+
 app.listen(PORT, () => {
     console.log(`VZG Editor läuft auf http://localhost:${PORT}`);
     if (!PASSWORD) {

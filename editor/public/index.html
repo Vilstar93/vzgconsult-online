@@ -40,6 +40,7 @@
         <button id="btn-preview" title="Vorschau">👁 Vorschau</button>
         <button id="btn-code" title="HTML/CSS anzeigen">&#123;&#125; Code</button>
         <button id="btn-reset" title="Auf Original zurücksetzen">↺ Original</button>
+        <button id="btn-publish" title="Änderungen nach GitHub veröffentlichen" style="background:#2f6fed;border-color:#2f6fed;font-weight:600;">🚀 Veröffentlichen</button>
         <div class="spacer"></div>
         <span id="status" class="status">Bereit</span>
         <a href="/site/index.html" target="_blank">Live-Vorschau ↗</a>
@@ -220,6 +221,25 @@
             setStatus(out.message || 'Zurückgesetzt');
             await loadPage(currentSlug);
             refreshEditedMarks();
+        });
+
+        // --- Nach GitHub veröffentlichen ---
+        document.getElementById('btn-publish').addEventListener('click', async () => {
+            if (!confirm('Aktuelle Änderungen nach GitHub veröffentlichen? Die Live-Seite wird danach automatisch neu gebaut.')) return;
+            setStatus('Veröffentliche …');
+            const btn = document.getElementById('btn-publish');
+            btn.disabled = true;
+            try {
+                const res = await fetch('/api/publish', { method: 'POST' });
+                const out = await res.json();
+                setStatus(out.message || (out.ok ? 'Veröffentlicht' : 'Fehler'));
+                if (!out.ok) alert(out.message + (out.detail ? '\n\n' + out.detail : ''));
+            } catch (e) {
+                setStatus('Fehler beim Veröffentlichen');
+                alert(String(e));
+            } finally {
+                btn.disabled = false;
+            }
         });
 
         // Tastenkürzel
