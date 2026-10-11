@@ -1,0 +1,37 @@
+doctype html
+html(lang='de')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='robots', content='noindex')
+        meta(name='author', content='VZG Consult')
+
+        title Seite nicht gefunden – VZG Consult
+
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        include includes/css
+
+    body
+
+        include includes/header
+
+        include includes/navbar
+
+        section.page-section
+            .container
+                .row
+                    .col-lg-8.mx-auto.text-center
+                        h1.section-heading.mb-4
+                            span.section-heading-upper Fehler 404
+                            span.section-heading-lower Seite nicht gefunden
+                        p.mb-4
+                            | Die aufgerufene Seite existiert nicht oder wurde verschoben. Nutzen Sie bitte die Navigation oder kehren Sie zur Startseite zurück.
+                        a.btn.btn-primary.btn-xl.me-2.mb-2(href='index.html') Zur Startseite
+                        a.btn.btn-outline-secondary.btn-xl.mb-2(href='kontakt.html') Kontakt aufnehmen
+
+        include includes/footer
+
+        include includes/scripts
