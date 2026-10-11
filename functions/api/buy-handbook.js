@@ -20,11 +20,17 @@ function json(body, status = 200) {
     });
 }
 
+// Redirects must land on the host the customer is actually using, so the
+// request origin wins. PUBLIC_BASE_URL is only a fallback.
 function baseUrl(request, env) {
+    const origin = new URL(request.url).origin;
+    if (origin && origin !== 'null') {
+        return origin;
+    }
     if (env.PUBLIC_BASE_URL) {
         return env.PUBLIC_BASE_URL.replace(/\/$/, '');
     }
-    return new URL(request.url).origin;
+    return origin;
 }
 
 function orderId() {
