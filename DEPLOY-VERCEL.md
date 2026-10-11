@@ -45,10 +45,10 @@ gh repo create vzg-consult-website --public --source=. --remote=origin --push
 
 ---
 
-## 3. Eigene Domain verbinden (vzgconsult.eu)
+## 3. Eigene Domain verbinden (vzgconsult.online)
 
 1. Im Vercel-Projekt: **Settings → Domains → Add**.
-2. `vzgconsult.eu` und `www.vzgconsult.eu` hinzufügen.
+2. `vzgconsult.online` und `www.vzgconsult.online` hinzufügen.
 3. Vercel zeigt die nötigen DNS-Einträge. Bei Ihrem Domain-Anbieter eintragen:
    - **A** `@` → `76.76.21.21`
    - **CNAME** `www` → `cname.vercel-dns.com`
@@ -66,7 +66,7 @@ Im Vercel-Projekt: **Settings → Environment Variables** (für „Production"):
 | `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
 | `PAYPERCUT_SECRET_KEY` | Ihr geheimer Paypercut-Schlüssel |
 | `PAYPERCUT_WEBHOOK_SECRET` | Ihr Paypercut-Webhook-Secret |
-| `PUBLIC_BASE_URL` | `https://www.vzgconsult.eu` |
+| `PUBLIC_BASE_URL` | `https://www.vzgconsult.online` |
 | `STRIPE_SECRET_KEY` | nur bei Stripe |
 
 Danach **Redeploy** auslösen (Deployments → … → Redeploy), damit die Variablen
@@ -81,7 +81,7 @@ greifen. Die Checkout-Logik liegt unter `api/create-checkout-session.js`
    Deutschland ist unterstützt).
 2. Unternehmensdaten und Bankkonto (IBAN) hinterlegen, KYC abschließen.
 3. Bei der Antragstellung als **Website** angeben:
-   `https://www.vzgconsult.eu`
+   `https://www.vzgconsult.online`
 4. Prüfungsrelevante Seiten sind bereits vorhanden:
    - **Impressum** (Anbieter, Inhaber, Steuernummer): `/impressum.html`
    - **Datenschutzerklärung**: `/datenschutz.html`
@@ -89,7 +89,7 @@ greifen. Die Checkout-Logik liegt unter `api/create-checkout-session.js`
    - **Preise/Leistungen**: `/preise.html`
    - **Buchung/Checkout**: `/termin.html`
 5. Webhook im Paypercut-Dashboard auf
-   `https://www.vzgconsult.eu/api/webhook` setzen.
+   `https://www.vzgconsult.online/api/webhook` setzen.
 
 ---
 

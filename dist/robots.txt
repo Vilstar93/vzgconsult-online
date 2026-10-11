@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.vzgconsult.eu/sitemap.xml
+Sitemap: https://www.vzgconsult.online/sitemap.xml
