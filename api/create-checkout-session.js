@@ -59,12 +59,29 @@ async function createPaypercutSession(data, base) {
             Authorization: `Bearer ${process.env.PAYPERCUT_SECRET_KEY}`
         },
         body: JSON.stringify({
-            currency: 'eur',
+            currency: 'EUR',
             mode: 'payment',
+            ui_mode: 'hosted',
             success_url: `${base}/termin.html?status=success`,
             cancel_url: `${base}/termin.html?status=cancel`,
-            line_items: [{ name: service.name, quantity: 1, unit_price: service.amountCents }],
-            metadata: { service: service.name, date: data.date || '', time: data.time || '' }
+            customer_email: data.email || undefined,
+            line_items: [
+                {
+                    quantity: 1,
+                    price_data: {
+                        currency: 'EUR',
+                        unit_amount: service.amountCents,
+                        product_data: { name: service.name }
+                    }
+                }
+            ],
+            metadata: {
+                service: service.name,
+                date: data.date || '',
+                time: data.time || '',
+                name: data.name || '',
+                phone: data.phone || ''
+            }
         })
     });
     const result = await response.json();
