@@ -98,6 +98,23 @@ greifen. Die Zahlungslogik liegt als Vercel-Serverless-Function in
 `api/create-checkout-session.js` (Checkout) und `api/webhook.js` (Bestätigung)
 und wird automatisch bereitgestellt.
 
+### Paypercut – technische Details (verifiziert)
+
+Die Checkout-Funktion nutzt die Paypercut-API:
+
+- **Endpunkt:** `POST https://api.paypercut.io/v1/checkouts` mit
+  `Authorization: Bearer <PAYPERCUT_SECRET_KEY>`
+- **Bezahlseite:** `ui_mode: "hosted"` – die Antwort enthält `url`
+  (`https://buy.paypercut.io/c/...`); der Kunde wird dorthin weitergeleitet.
+- **Währung:** `currency: "EUR"` (Großbuchstaben, Pflicht).
+- **Beträge:** `line_items[].price_data.unit_amount` in Cent (z. B. `4900` = 49,00 €).
+
+**Testbetrieb:** Mit Testschlüsseln (`sk_test_…`, `pk_test_…`) läuft alles im
+Sandbox-Modus (`livemode: false`) – es wird kein echtes Geld bewegt. Für den
+Live-Betrieb die `sk_live_…`-Schlüssel als `PAYPERCUT_SECRET_KEY` hinterlegen.
+Der „publishable key" (`pk_…`) wird **nicht** benötigt, da die Bezahlseite
+vollständig von Paypercut gehostet wird.
+
 ---
 
 ## 5. Paypercut-Konto beantragen und Website zur Prüfung einreichen
