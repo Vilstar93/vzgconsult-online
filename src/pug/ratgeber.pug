@@ -1,0 +1,91 @@
+doctype html
+html(lang='de')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='Energie-Ratgeber für Deutschland: Strom- und Gasrechnungen verstehen, Tarife vergleichen, Vertragsfallen vermeiden und monatliche Kosten senken. PDF-Download für 199 € inkl. 19 % USt.')
+        meta(name='author', content='VZG Consult')
+
+        title Energie-Ratgeber – VZG Consult
+
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        include includes/css
+
+    body
+
+        include includes/header
+
+        include includes/navbar
+
+        each product in products
+
+            section.page-section
+                .container
+                    .row.g-5.align-items-center
+                        .col-lg-6
+                            h1.section-heading.mb-4
+                                span.section-heading-upper Digitaler Ratgeber
+                                span.section-heading-lower= product.shortName
+                            p.lead= product.description
+                            ul.price-features.mb-4
+                                each highlight in product.highlights
+                                    li= highlight
+                            .d-flex.flex-wrap.align-items-center.gap-3
+                                span.h3.mb-0.me-2= product.price
+                                a.btn.btn-primary.btn-xl.js-buy-handbook(href='#', data-slug=product.slug) Jetzt kaufen &amp; herunterladen
+                            p.small.text-muted.mt-3.mb-0
+                                | Sofort-Download als PDF · #{product.pages} Seiten · #{product.language} · Preis inkl. 19 % USt.
+
+                        .col-lg-6
+                            .bg-faded.rounded.p-4
+                                h2.h6.text-uppercase.mb-3 Inhalt des Ratgebers
+                                ol.mb-0.payment-steps
+                                    each chapter in product.chapters
+                                        li
+                                            strong Kapitel #{chapter.number}:
+                                            |  #{chapter.title}
+                                hr.my-4
+                                .alert.alert-success.d-none(role='alert', data-buy-status)
+
+            section.page-section
+                .container
+                    .row
+                        .col-lg-8.mx-auto
+                            .bg-faded.rounded.p-5
+                                h2.section-heading.mb-4
+                                    span.section-heading-upper Schritt für Schritt
+                                    span.section-heading-lower So funktioniert der Kauf
+                                ol.mb-0.payment-steps
+                                    li
+                                        strong Kaufen:
+                                        |  Auf „Jetzt kaufen" klicken und bequem online bezahlen – per Karte, SEPA, Klarna, Apple Pay oder Google Pay.
+                                    li
+                                        strong Download:
+                                        |  Nach erfolgreicher Zahlung gelangen Sie direkt zur Download-Seite und laden das PDF herunter.
+                                    li
+                                        strong Beleg:
+                                        |  Sie erhalten die Zahlungsbestätigung per E-Mail. Bei Fragen sind wir jederzeit erreichbar.
+                                p.small.text-muted.mt-3.mb-0
+                                    | Der Ratgeber ist ein digitales Produkt. Mit dem Kauf stimmen Sie den&nbsp;
+                                    a(href='agb.html') AGB
+                                    | &nbsp;zu. Bei digitalen Inhalten erlischt das Widerrufsrecht mit Beginn des Downloads.
+
+        section.page-section.cta
+            .container
+                .row
+                    .col-xl-9.mx-auto
+                        .cta-inner.bg-faded.text-center.rounded
+                            h2.section-heading.mb-4
+                                span.section-heading-upper Sie möchten persönliche Beratung?
+                                span.section-heading-lower Wir helfen Ihnen gern
+                            p.mb-4
+                                | Der Ratgeber bringt Ihnen das Wissen – wir übernehmen auf Wunsch auch den kompletten Tarifwechsel für Sie.
+                            a.btn.btn-light.btn-xl.me-2.mb-2(href='termin.html') Termin buchen
+                            a.btn.btn-outline-light.btn-xl.mb-2(href='kontakt.html') Kontakt aufnehmen
+
+        include includes/footer
+
+        include includes/scripts

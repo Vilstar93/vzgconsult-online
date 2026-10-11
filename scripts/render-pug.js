@@ -14,7 +14,8 @@ module.exports = function renderPug(filePath) {
         doctype: 'html',
         filename: filePath,
         basedir: srcPath,
-        prices: require('../src/data/prices.js')
+        prices: require('../src/data/prices.js'),
+        products: require('../src/data/products.js')
     });
 
     const destPathDirname = upath.dirname(destPath);
