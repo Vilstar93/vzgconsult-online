@@ -1,15 +1,18 @@
 // Cloudflare Pages Function – Download eines digitalen Produkts.
 // Erreichbar unter /api/download?order=<token>.
 //
-// Die Zahlung wird serverseitig bei Paypercut geprüft, erst danach wird die
-// PDF-Datei aus KV (Binding ORDERS) ausgeliefert. Damit ist der Download nicht
-// durch Raten erreichbar.
+// Die Zahlung wird serverseitig beim Zahlungsanbieter geprüft (Unzer oder
+// Paypercut, siehe Bestellung), erst danach wird die PDF-Datei aus KV
+// (Binding ORDERS) ausgeliefert. Damit ist der Download nicht durch Raten
+// erreichbar.
 //
 // Benötigte Umgebungsvariablen:
+//   UNZER_PRIVATE_KEY=s-priv-... | p-priv-...
 //   PAYPERCUT_SECRET_KEY=sk_...
 // KV-Bindings:
 //   ORDERS  → Bestellungen (order:<token>) und Dateien (file:<key>)
 import { findProduct } from './_products.js';
+import { verifyPayment } from './_payments.js';
 
 function json(body, status = 200) {
     return new Response(JSON.stringify(body), {
@@ -47,21 +50,26 @@ async function handle(context) {
         return json({ message: 'Produkt nicht gefunden.' }, 404);
     }
 
-    // Zahlung bei Paypercut prüfen – nur bei bezahlter Bestellung ausliefern.
-    const response = await fetch(`https://api.paypercut.io/v1/checkouts/${order.checkoutId}`, {
-        headers: { Authorization: `Bearer ${env.PAYPERCUT_SECRET_KEY}` }
-    });
-    const checkout = await response.json();
-    if (!response.ok) {
+    // Zahlung serverseitig prüfen – nur bei bezahlter Bestellung ausliefern.
+    let payment;
+    try {
+        payment = await verifyPayment(order.provider || 'paypercut', order.checkoutId, env);
+    } catch (error) {
         return json({ message: 'Zahlung konnte nicht geprüft werden.' }, 502);
     }
-    if (checkout.payment_status !== 'paid') {
+    if (payment.status === 'failed') {
+        return json({ message: 'Zahlung konnte nicht geprüft werden.' }, 502);
+    }
+    if (payment.status !== 'paid') {
         return json({ message: 'Die Zahlung ist noch nicht abgeschlossen.' }, 402);
     }
 
     if (order.status !== 'paid') {
         order.status = 'paid';
         order.paidAt = new Date().toISOString();
+        if (payment.paymentId) {
+            order.paymentId = payment.paymentId;
+        }
         await env.ORDERS.put(`order:${token}`, JSON.stringify(order), {
             expirationTtl: 60 * 60 * 24 * 30
         });

@@ -3,11 +3,13 @@
 // damit das Buchungsformular unverändert bleibt).
 //
 // Benötigte Umgebungsvariablen (Cloudflare Pages → Settings → Variables):
-//   PAYMENT_PROVIDER=paypercut|stripe
+//   PAYMENT_PROVIDER=unzer|paypercut|stripe
+//   UNZER_PRIVATE_KEY=s-priv-... | p-priv-...
 //   PAYPERCUT_SECRET_KEY=sk_...      PAYPERCUT_WEBHOOK_SECRET=whsec_...
 //   STRIPE_SECRET_KEY=sk_...         STRIPE_WEBHOOK_SECRET=whsec_...
 //   PUBLIC_BASE_URL=https://ihre-domain.de
 import { findService } from './_prices.js';
+import { createCheckout, providerFor } from './_payments.js';
 
 function json(body, status = 200) {
     return new Response(JSON.stringify(body), {
@@ -27,47 +29,6 @@ function baseUrl(request, env) {
         return env.PUBLIC_BASE_URL.replace(/\/$/, '');
     }
     return origin;
-}
-
-async function createPaypercutSession(data, base, env) {
-    const service = findService(data.service);
-    const response = await fetch('https://api.paypercut.io/v1/checkouts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${env.PAYPERCUT_SECRET_KEY}`
-        },
-        body: JSON.stringify({
-            currency: 'EUR',
-            mode: 'payment',
-            ui_mode: 'hosted',
-            success_url: `${base}/termin.html?status=success`,
-            cancel_url: `${base}/termin.html?status=cancel`,
-            customer_email: data.email || undefined,
-            line_items: [
-                {
-                    quantity: 1,
-                    price_data: {
-                        currency: 'EUR',
-                        unit_amount: service.amountCents,
-                        product_data: { name: service.name }
-                    }
-                }
-            ],
-            metadata: {
-                service: service.name,
-                date: data.date || '',
-                time: data.time || '',
-                name: data.name || '',
-                phone: data.phone || ''
-            }
-        })
-    });
-    const result = await response.json();
-    if (!response.ok) {
-        throw new Error(result.message || 'Paypercut-Fehler.');
-    }
-    return result.url || result.checkout_url;
 }
 
 async function createStripeSession(data, base, env) {
@@ -121,8 +82,9 @@ export async function onRequestPost(context) {
         return json({ message: 'Unbekannte Leistung.' }, 400);
     }
 
-    const provider = (env.PAYMENT_PROVIDER || 'paypercut').toLowerCase();
+    const provider = providerFor(env);
     const base = baseUrl(request, env);
+    const reference = `buchung-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
     try {
         let url;
@@ -131,11 +93,28 @@ export async function onRequestPost(context) {
                 return json({ message: 'Stripe ist nicht konfiguriert.' }, 500);
             }
             url = await createStripeSession(data, base, env);
+        } else if (provider === 'unzer' || provider === 'paypercut') {
+            const checkout = await createCheckout(
+                {
+                    amountCents: service.amountCents,
+                    itemName: service.name,
+                    reference,
+                    email: data.email,
+                    successUrl: `${base}/termin.html?status=success`,
+                    cancelUrl: `${base}/termin.html?status=cancel`,
+                    metadata: {
+                        service: service.name,
+                        date: data.date || '',
+                        time: data.time || '',
+                        name: data.name || '',
+                        phone: data.phone || ''
+                    }
+                },
+                env
+            );
+            url = checkout.url;
         } else {
-            if (!env.PAYPERCUT_SECRET_KEY) {
-                return json({ message: 'Paypercut ist nicht konfiguriert.' }, 500);
-            }
-            url = await createPaypercutSession(data, base, env);
+            return json({ message: 'Zahlung ist nicht konfiguriert.' }, 500);
         }
         if (!url) {
             return json({ message: 'Keine Checkout-Adresse erhalten.' }, 502);

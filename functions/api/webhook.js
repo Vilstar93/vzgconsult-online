@@ -2,12 +2,19 @@
 // Erreichbar unter /api/webhook (identisch zur Vercel-Variante).
 //
 // Benötigte Umgebungsvariablen:
-//   PAYMENT_PROVIDER=paypercut|stripe
+//   PAYMENT_PROVIDER=unzer|paypercut|stripe
+//   UNZER_PRIVATE_KEY=s-priv-... | p-priv-...
 //   PAYPERCUT_WEBHOOK_SECRET=whsec_...   oder   STRIPE_WEBHOOK_SECRET=whsec_...
 //
 // Signaturprüfung: Stripe-Schema (t=...,v1=...) bzw. einfache HMAC-SHA256-Prüfung
 // über den Roh-Body. Ohne konfiguriertes Secret wird nur geparst (nicht für Produktion).
+//
+// Unzer signiert Webhooks nicht. Die Absicherung erfolgt zweistufig:
+//   1. Unzer-IPs in Cloudflare allowlisten.
+//   2. Die Zahlung wird über die in der Nutzlast enthaltene `retrieveUrl`
+//      serverseitig mit dem privaten Schlüssel nachgeladen und geprüft.
 import { findService } from './_prices.js';
+import { unzerPaymentState } from './_payments.js';
 
 const encoder = new TextEncoder();
 
@@ -70,17 +77,61 @@ async function verify(rawBody, signatureHeader, secret) {
     return { ok: true, event: JSON.parse(rawBody || '{}') };
 }
 
+// Unzer-Webhooks sind nicht signiert. Wir laden die Zahlung über die
+// mitgelieferte `retrieveUrl` nach (privater Schlüssel) und vertrauen nur dem
+// Ergebnis dieses Aufrufs, nicht dem Request-Body selbst.
+async function handleUnzer(rawBody, env) {
+    let payload = {};
+    try {
+        payload = JSON.parse(rawBody || '{}');
+    } catch (e) {
+        return new Response('Webhook Error: Ungültige Nutzlast', { status: 400 });
+    }
+
+    const retrieveUrl = payload.retrieveUrl;
+    if (!retrieveUrl || !/^https:\/\/(sbx-)?api\.unzer\.com\//.test(retrieveUrl)) {
+        return new Response('Webhook Error: Ungültige retrieveUrl', { status: 400 });
+    }
+
+    const response = await fetch(retrieveUrl, {
+        headers: { Authorization: 'Basic ' + btoa(`${env.UNZER_PRIVATE_KEY}:`) }
+    });
+    if (!response.ok) {
+        return new Response('Webhook Error: Zahlung konnte nicht geladen werden', { status: 502 });
+    }
+    const payment = await response.json();
+    const transaction = (payment.transactions || [])[0] || {};
+    const status = unzerPaymentState(transaction.status, payment.state?.name);
+
+    console.log(
+        `[webhook] Unzer ${payload.event || ''} paymentId=${payload.paymentId || ''} status=${status}`
+    );
+
+    return new Response(JSON.stringify({ received: true, status }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    });
+}
+
 export async function onRequestPost(context) {
     const { request, env } = context;
     const provider = (env.PAYMENT_PROVIDER || 'paypercut').toLowerCase();
+    const rawBody = await request.text();
+
+    if (provider === 'unzer') {
+        try {
+            return await handleUnzer(rawBody, env);
+        } catch (error) {
+            return new Response(`Webhook Error: ${error.message}`, { status: 400 });
+        }
+    }
+
     const secret =
         provider === 'stripe' ? env.STRIPE_WEBHOOK_SECRET : env.PAYPERCUT_WEBHOOK_SECRET;
     const signature =
         request.headers.get('stripe-signature') ||
         request.headers.get('paypercut-signature') ||
         '';
-
-    const rawBody = await request.text();
 
     let result;
     try {

@@ -33,6 +33,7 @@ npx wrangler@3 pages deploy dist --project-name=vzgconsult --branch=main
 | `src/i18n/bg.json` | Bulgarische Übersetzungen (Schlüssel = deutscher Text) |
 | `src/js/` | `checkout.js` (Buchung), `handbook.js` (Kauf/Download), `lang.js` (DE/BG) |
 | `functions/api/` | Cloudflare-Pages-Funktionen (`/api/...`) |
+| `functions/api/_payments.js` | Zahlungsanbieter (Unzer HPP v2, Paypercut) |
 | `private/` | **Nicht** versioniert – PDF-Quelle für KV-Upload |
 | `dist/` | Build-Ausgabe (wird mitversioniert und deployt) |
 
@@ -44,6 +45,16 @@ npx wrangler@3 pages deploy dist --project-name=vzgconsult --branch=main
   Text braucht einen Schlüssel in `src/i18n/bg.json`.
 - **Paypercut ersetzt `{CHECKOUT_SESSION_ID}` nicht.** Bestell-ID selbst
   erzeugen und in `success_url` mitgeben.
+- **Zahlungsanbieter** ist über `PAYMENT_PROVIDER` austauschbar
+  (`unzer` / `paypercut`). Die Anbindung liegt zentral in
+  `functions/api/_payments.js`; Bestellungen speichern den Anbieter mit, damit
+  `download.js` die richtige Prüfung wählt.
+- **Unzer** nutzt die Hosted Payment Page v2: Token über
+  `token[.test].upcgw.com`, Zahlung über `paypage[.test].unzer.com/v2/merchant/paypage`,
+  Prüfung über `GET /v2/merchant/paypage/{paypageId}`. Der Access-Token ist nur
+  7 Minuten gültig und wird pro Request neu geholt.
+- **Unzer signiert Webhooks nicht** – Absicherung über IP-Allowlist und
+  serverseitiges Nachladen via `retrieveUrl`.
 - **Redirects** nutzen den Origin der Anfrage (nicht `PUBLIC_BASE_URL`), damit
   sie auch vor der Domain-Umstellung funktionieren.
 - **Der Ratgeber-PDF darf nie in `dist/` landen.** Auslieferung nur über
