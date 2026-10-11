@@ -3,7 +3,33 @@
 Cloudflare Pages ist die kostenlose Alternative zu Vercel – unbegrenzter
 Traffic, keine „Pro"-Hürde, funktioniert mit privaten GitHub-Repositories.
 
-## 1. Projekt anlegen
+## 0. Bereits eingerichtet
+
+- **Projekt:** `vzgconsult` → https://vzgconsult.pages.dev
+- **Account-ID:** `618a9ab751696fbc066923771b6a4d54`
+- **Zahlung:** Paypercut (Test), Funktionen unter `/api/...`
+- **Umgebungsvariablen:** `PAYMENT_PROVIDER`, `PAYPERCUT_SECRET_KEY`,
+  `PUBLIC_BASE_URL=https://vzgconsult.online`
+
+### Domain vzgconsult.online (Porkbun → Cloudflare)
+
+Die Zone ist in Cloudflare angelegt. Bei **Porkbun** müssen die Nameserver
+geändert werden:
+
+| Von (Porkbun) | Nach (Cloudflare) |
+| --- | --- |
+| `curitiba.ns.porkbun.com` | `alberto.ns.cloudflare.com` |
+| `fortaleza.ns.porkbun.com` | `lara.ns.cloudflare.com` |
+| `maceio.ns.porkbun.com` | |
+| `salvador.ns.porkbun.com` | |
+
+DNS-Einträge (bereits angelegt): `@` und `www` → CNAME `vzgconsult.pages.dev`
+(proxied). HTTPS-Zertifikat wird automatisch ausgestellt.
+
+> **E-Mail:** Falls E-Mail über die Domain läuft, die nötigen MX-Einträge vor
+> der Nameserver-Umstellung in Cloudflare anlegen, sonst geht E-Mail verloren.
+
+## 1. Projekt anlegen (Referenz)
 
 1. https://dash.cloudflare.com → **Workers & Pages** → **Create** → **Pages**
    → **Connect to Git**.
@@ -29,7 +55,7 @@ Traffic, keine „Pro"-Hürde, funktioniert mit privaten GitHub-Repositories.
 | `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
 | `PAYPERCUT_SECRET_KEY` | `sk_test_...` bzw. `sk_live_...` |
 | `PAYPERCUT_WEBHOOK_SECRET` | `whsec_...` |
-| `PUBLIC_BASE_URL` | `https://<projekt>.pages.dev` (später die Domain) |
+| `PUBLIC_BASE_URL` | `https://vzgconsult.online` |
 | `STRIPE_SECRET_KEY` | nur bei Stripe |
 | `STRIPE_WEBHOOK_SECRET` | nur bei Stripe |
 
