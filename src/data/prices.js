@@ -1,10 +1,11 @@
-// Price list for paid services. Edit here – it feeds the pricing page via the
-// build (see scripts/build-pug.js) and the booking form via data-service names.
-// Prices are net prices in EUR (zzgl. 19 % USt.).
+// Price list for paid services. Single source of truth for both the website
+// build (scripts/render-pug.js) and the checkout server (server/server.js).
+// `amountCents` is the net amount in euro cents (zzgl. 19 % USt.).
 module.exports = [
     {
         name: 'Erstberatung Energie',
         price: '49 €',
+        amountCents: 4900,
         duration: 'ca. 30 Minuten, telefonisch',
         description:
             'Erste Einschätzung Ihrer Energiekosten und Ihrer Einsparmöglichkeiten – unverbindlich und schnell.',
@@ -13,6 +14,7 @@ module.exports = [
     {
         name: 'Tarif-Check & Optimierung',
         price: '99 €',
+        amountCents: 9900,
         duration: 'ca. 60 Minuten',
         description:
             'Wir prüfen Ihren Strom-, Gas- oder Wärmevertrag, vergleichen Tarife und zeigen konkretes Sparpotenzial auf.',
@@ -22,6 +24,7 @@ module.exports = [
     {
         name: 'Wechsel-Service',
         price: '149 €',
+        amountCents: 14900,
         duration: 'bis zum Abschluss des Wechsels',
         description:
             'Wir übernehmen den kompletten Wechsel: Anmeldung, Kündigung des Altvertrags und Nachverfolgung bis zur Bestätigung.',
@@ -30,6 +33,7 @@ module.exports = [
     {
         name: 'Vor-Ort-Energieberatung',
         price: '249 €',
+        amountCents: 24900,
         duration: 'ca. 60 – 90 Minuten vor Ort',
         description:
             'Beratung direkt bei Ihnen zu Hause oder im Betrieb – mit Blick auf Verbrauch, Technik und Einsparpotenziale.',
@@ -38,6 +42,7 @@ module.exports = [
     {
         name: 'Kundenbetreuung & Callcenter-Service',
         price: '39 € / Std.',
+        amountCents: 3900,
         duration: 'monatlich oder auf Abruf',
         description:
             'Für Energieversorger und Unternehmen: professionelle Betreuung Ihrer Kunden per Telefon, E-Mail und Chat.',
@@ -46,6 +51,7 @@ module.exports = [
     {
         name: 'Business-Paket',
         price: '599 € / Monat',
+        amountCents: 59900,
         duration: 'fortlaufend, monatlich kündbar',
         description:
             'Rundum-Betreuung für Unternehmen: Energie-Optimierung, Kundenbindung, Marketing und Service inklusive.',

@@ -63,48 +63,33 @@ optimale Erfahrung.
 2. Diese Links können Sie in E-Mails oder direkt auf der Buchungsbestätigung
    versenden.
 
-### 3b. Vollständig: Stripe Checkout (empfohlen)
+### 3b. Vollständig: Checkout über den mitgelieferten Server (empfohlen)
 
-Auf der Buchungsseite (`termin.html`) setzen Sie am Formular ein Attribut:
+Im Ordner `server/` liegt ein fertiger Express-Server, der Checkout-Sitzungen
+für **Stripe** oder **Paypercut** erzeugt. Das Formular in `termin.html` zeigt
+bereits auf `/api/create-checkout-session`.
 
-```html
-<form id="bookingForm" ... data-checkout-url="/api/create-checkout-session">
+```bash
+cd server
+npm install
+cp .env.example .env      # Anbieter + Schlüssel eintragen
+npm start                 # http://localhost:4242
 ```
 
-Der Endpunkt `POST /api/create-checkout-session` erhält die Formulardaten als
-JSON und muss eine JSON-Antwort `{ "url": "https://checkout.stripe.com/..." }`
-zurückgeben. Beispiel (Node.js mit dem Stripe-SDK, **serverseitig**):
+In `server/.env` wählen Sie den Anbieter (`PAYMENT_PROVIDER=stripe` oder
+`paypercut`) und tragen den **geheimen** Schlüssel ein. Der Server bedient
+sowohl die fertige Website (`dist/`) als auch die API-Endpunkte:
 
-```js
-// server.js – läuft auf Ihrer Umgebung, NICHT im Browser
-const express = require('express');
-const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Secret nur serverseitig!
-const app = express();
-app.use(express.json());
+- `POST /api/create-checkout-session` → `{ "url": "https://…" }`
+- `POST /api/webhook` → Bestätigung nach erfolgreicher Zahlung
 
-app.post('/api/create-checkout-session', async (req, res) => {
-    const { service, date, time, name, email } = req.body;
-    const session = await stripe.checkout.sessions.create({
-        mode: 'payment',
-        line_items: [{ price_data: { currency: 'eur', product_data: { name: service }, unit_amount: 9900 }, quantity: 1 }],
-        customer_email: email,
-        success_url: 'https://IHRE-DOMAIN.de/termin.html?status=success',
-        cancel_url: 'https://IHRE-DOMAIN.de/termin.html?status=cancel',
-        metadata: { service, date, time, name }
-    });
-    res.json({ url: session.url });
-});
+Details zu den Anbietern, Gebühren und Auszahlungen: siehe `PAYMENT-OPTIONS.md`.
 
-app.listen(3000);
-```
+> Der geheime Schlüssel bleibt ausschließlich im Server (`.env`), niemals im
+> Browser. `.env` ist in `.gitignore` eingetragen.
 
-**Wichtig:** Der geheime API-Schlüssel (`STRIPE_SECRET_KEY`) darf **niemals** im
-Browser-Code stehen. Legen Sie ihn als Umgebungsvariable/Secret auf Ihrem Server
-oder Hosting ab.
-
-Der Einzelpreis (`unit_amount`) wird in **Cent** angegeben (99 € = `9900`).
-Ordnen Sie den Betrag dem gewählten Paket zu.
+Die Preise kommen aus einer gemeinsamen Quelle (`src/data/prices.js`) – sowohl
+die Website als auch der Server lesen daraus.
 
 ---
 

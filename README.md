@@ -34,6 +34,17 @@ Die fertige Website liegt nach `npm run build` im Ordner `dist/`.
 Dieser Ordner kann direkt auf einem Webhosting (Shared Hosting, Netlify,
 GitHub Pages, …) veröffentlicht werden.
 
+## Checkout-Server
+
+Im Ordner `server/` liegt ein Express-Server, der Online-Zahlungen für
+**Stripe** oder **Paypercut** erzeugt und die fertige Website ausliefert:
+
+```bash
+cd server && npm install && cp .env.example .env && npm start
+```
+
+Siehe `PAYMENTS.md` (Einrichtung) und `PAYMENT-OPTIONS.md` (Anbietervergleich).
+
 ## Vor der Veröffentlichung zu erledigen
 
 - **Impressum**: Umsatzsteuer-Identifikationsnummer (USt-IdNr.) ergänzen

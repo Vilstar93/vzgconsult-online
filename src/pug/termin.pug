@@ -42,7 +42,7 @@ html(lang='de')
                             | Alternativ können Sie die Zahlung auch nach der Terminbestätigung per Rechnung begleichen.
 
                     .col-lg-7
-                        form#bookingForm.bg-faded.rounded.p-4(action='#', method='post', data-checkout='stripe', data-thank-you='#buchung-bestaetigung')
+                        form#bookingForm.bg-faded.rounded.p-4(action='#', method='post', data-checkout='stripe', data-checkout-url='/api/create-checkout-session', data-thank-you='#buchung-bestaetigung')
                             .row.g-3
                                 .col-12
                                     label.form-label(for='service') Leistung

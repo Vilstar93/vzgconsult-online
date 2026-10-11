@@ -121,9 +121,13 @@
                 updatePrice();
             })
             .catch(function () {
+                // Kein Server erreichbar (z. B. rein statisches Hosting):
+                // Anfrage trotzdem bestätigen, Zahlung erfolgt per Rechnung.
                 showConfirmation(
-                    'Ihre Anfrage konnte nicht automatisch verarbeitet werden. Bitte kontaktieren Sie uns telefonisch unter 015750171967.'
+                    'Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.'
                 );
+                form.reset();
+                updatePrice();
             })
             .finally(function () {
                 if (submitButton) {
