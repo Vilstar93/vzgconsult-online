@@ -1,0 +1,52 @@
+// Feature / service cards
+.feature {
+    padding: 2rem;
+    height: 100%;
+
+    .feature-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem;
+        height: 4rem;
+        margin-bottom: 1.5rem;
+        border-radius: 50%;
+        background-color: fade-out($primary, 0.85);
+        color: darken($primary, 10%);
+        font-size: 1.75rem;
+        font-weight: 800;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    p {
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+}
+
+// Highlighted stats band
+.stats {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    background-color: fade-out($primary, 0.08);
+    color: $white;
+
+    .stat-number {
+        display: block;
+        font-size: 2.75rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.85rem;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+}

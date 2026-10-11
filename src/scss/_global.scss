@@ -1,0 +1,66 @@
+body {
+    background-image: linear-gradient(rgba(13, 33, 55, 0.75), rgba(13, 33, 55, 0.75)), url('../assets/img/bg.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    color: $gray-800;
+}
+
+p {
+    line-height: 1.75;
+}
+
+a {
+    color: darken($primary, 5%);
+}
+
+.text-faded {
+    color: lighten($primary, 30%);
+}
+
+.site-heading {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    text-transform: uppercase;
+    line-height: 1;
+    font-family: $headings-font-family;
+
+    .site-heading-upper {
+        display: block;
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15rem;
+    }
+
+    .site-heading-lower {
+        font-size: 5rem;
+        font-weight: 200;
+        line-height: 4rem;
+    }
+}
+
+.page-section {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.section-heading {
+    text-transform: uppercase;
+
+    .section-heading-upper {
+        display: block;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.1rem;
+    }
+
+    .section-heading-lower {
+        display: block;
+        font-size: 2.75rem;
+        font-weight: 200;
+    }
+}
+
+.bg-faded {
+    background-color: lighten($primary, 40%);
+}

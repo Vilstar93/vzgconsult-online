@@ -1,0 +1,24 @@
+// Contact page
+.contact-info {
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+
+        .contact-label {
+            font-weight: 700;
+            min-width: 8rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05rem;
+            padding-top: 0.15rem;
+        }
+    }
+}
+
+.map-embed {
+    border: 0;
+    width: 100%;
+    min-height: 22rem;
+    border-radius: 0.5rem;
+}

@@ -1,0 +1,48 @@
+#mainNav {
+    background-color: fade-out($secondary, 0.05);
+    font-family: $headings-font-family;
+
+    .navbar-brand {
+        color: $white;
+
+        .text-primary {
+            color: lighten($primary, 15%) !important;
+        }
+    }
+
+    .navbar-nav {
+        .nav-item {
+            .nav-link {
+                color: fade-out($white, 0.35);
+                font-weight: 600;
+            }
+
+            &.active {
+                .nav-link {
+                    color: lighten($primary, 20%);
+                }
+            }
+        }
+    }
+
+    @media (min-width: 992px) {
+        .navbar-nav {
+            .nav-item {
+                .nav-link {
+                    font-size: 0.85rem;
+                    letter-spacing: 0.05rem;
+
+                    &:hover {
+                        color: fade-out($white, 0.55);
+                    }
+                }
+
+                &.active {
+                    .nav-link:hover {
+                        color: lighten($primary, 20%);
+                    }
+                }
+            }
+        }
+    }
+}

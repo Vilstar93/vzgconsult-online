@@ -1,0 +1,11 @@
+.footer {
+    background-color: fade-out($secondary, 0.05);
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            color: lighten($primary, 20%);
+        }
+    }
+}

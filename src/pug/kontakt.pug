@@ -1,0 +1,98 @@
+doctype html
+html(lang='de')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='Kontaktieren Sie VZG Consult in Wallerfangen: Telefon, E-Mail, WhatsApp und Kontaktformular. Hospitalstr. 30, 66798 Wallerfangen, Deutschland.')
+        meta(name='author', content='VZG Consult')
+
+        title Kontakt – VZG Consult
+
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        include includes/css
+
+    body
+
+        include includes/header
+
+        include includes/navbar
+
+        section.page-section
+            .container
+                .row.g-5
+                    .col-lg-5
+                        h2.section-heading.mb-4
+                            span.section-heading-upper Ihre Energiefragen
+                            span.section-heading-lower Kontakt
+                        .contact-info.bg-faded.rounded.p-4
+                            .contact-item
+                                span.contact-label Adresse
+                                span
+                                    | Hospitalstr. 30
+                                    br
+                                    | 66798 Wallerfangen
+                                    br
+                                    | Deutschland
+                            .contact-item
+                                span.contact-label Telefon
+                                span
+                                    a(href='tel:+4915750171967') +49 157 50171967
+                            .contact-item
+                                span.contact-label E-Mail
+                                span
+                                    a(href='mailto:info@vzgconsult.de') info@vzgconsult.de
+                            .contact-item.mb-0
+                                span.contact-label WhatsApp
+                                span
+                                    a(href='https://wa.me/4915750171967', target='_blank', rel='noopener') Chat starten
+                            hr
+                            h3.h6.text-uppercase.mb-3 Öffnungszeiten
+                            ul.list-unstyled.mb-0.small
+                                li.d-flex
+                                    | Montag – Freitag
+                                    span.ms-auto 09:00 – 18:00 Uhr
+                                li.d-flex
+                                    | Samstag
+                                    span.ms-auto nach Vereinbarung
+                                li.d-flex
+                                    | Sonntag
+                                    span.ms-auto geschlossen
+                    .col-lg-7
+                        h2.section-heading.mb-4
+                            span.section-heading-upper Schreiben Sie uns
+                            span.section-heading-lower Anfrage senden
+                        form.bg-faded.rounded.p-4(action='https://formspree.io/f/vzgconsult', method='post')
+                            .row.g-3
+                                .col-md-6
+                                    label.form-label(for='name') Name
+                                    input#name.form-control(type='text', name='name', required)
+                                .col-md-6
+                                    label.form-label(for='email') E-Mail
+                                    input#email.form-control(type='email', name='email', required)
+                                .col-md-6
+                                    label.form-label(for='phone') Telefon (optional)
+                                    input#phone.form-control(type='tel', name='phone')
+                                .col-md-6
+                                    label.form-label(for='subject') Betreff
+                                    select#subject.form-select(name='subject')
+                                        option Energielösungen / Tarifwechsel
+                                        option Kundenservice &amp; Callcenter
+                                        option Kundenbindung &amp; Marketing
+                                        option Sonstiges
+                                .col-12
+                                    label.form-label(for='message') Ihre Nachricht
+                                    textarea#message.form-control(name='message', rows='5', required)
+                                .col-12
+                                    p.small.text-muted.mb-2
+                                        | Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben gemäß unserer Datenschutzerklärung zu.
+                                    button.btn.btn-primary.btn-xl(type='submit') Absenden
+                .row.mt-5
+                    .col-12
+                        iframe.map-embed(src='https://www.google.com/maps?q=Hospitalstr.+30,+66798+Wallerfangen,+Deutschland&output=embed', loading='lazy', referrerpolicy='no-referrer-when-downgrade', title='Karte: VZG Consult, Hospitalstr. 30, 66798 Wallerfangen')
+
+        include includes/footer
+
+        include includes/scripts
