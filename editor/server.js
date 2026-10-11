@@ -209,13 +209,16 @@ app.post('/api/publish', (req, res) => {
             if (addErr) return res.json({ ok: false, message: 'git add fehlgeschlagen.' });
             // Workflow-Dateien ausklammern: das Push-Token hat keinen `workflow`-Scope.
             git(['reset', '-q', '--', '.github/workflows'], () => {
-                git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out, errOut) => {
-                    const combined = `${out || ''}${errOut || ''}`;
-                    // "nothing to commit" ist kein Fehler: dann nur pushen.
-                    if (commitErr && !/nothing to commit|no changes added/i.test(combined)) {
-                        return res.json({ ok: false, message: 'git commit fehlgeschlagen.', detail: combined.slice(0, 400) });
-                    }
-                    afterCommit();
+                // Nur committen, wenn nach dem Ausklammern wirklich etwas vorgemerkt ist.
+                // `git diff --cached --quiet`: Exit 0 = keine Änderungen, Exit 1 = Änderungen vorhanden.
+                git(['diff', '--cached', '--quiet'], (diffErr) => {
+                    if (!diffErr) return afterCommit(); // nichts vorgemerkt -> nur pushen
+                    git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out, errOut) => {
+                        if (commitErr) {
+                            return res.json({ ok: false, message: 'git commit fehlgeschlagen.', detail: `${out || ''}${errOut || ''}`.slice(0, 400) });
+                        }
+                        afterCommit();
+                    });
                 });
             });
         });
