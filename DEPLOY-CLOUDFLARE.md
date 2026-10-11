@@ -52,14 +52,37 @@ DNS-Einträge (bereits angelegt): `@` und `www` → CNAME `vzgconsult.pages.dev`
 
 | Name | Wert |
 | --- | --- |
-| `PAYMENT_PROVIDER` | `paypercut` (oder `stripe`) |
+| `PAYMENT_PROVIDER` | `unzer` (oder `paypercut` / `stripe`) |
+| `UNZER_PRIVATE_KEY` | `s-priv-...` (Test) bzw. `p-priv-...` (Live) |
 | `PAYPERCUT_SECRET_KEY` | `sk_test_...` bzw. `sk_live_...` |
 | `PAYPERCUT_WEBHOOK_SECRET` | `whsec_...` |
-| `PUBLIC_BASE_URL` | `https://vzgconsult.online` |
+| `PUBLIC_BASE_URL` | `https://vzgconsult.online` (nur Fallback) |
 | `STRIPE_SECRET_KEY` | nur bei Stripe |
 | `STRIPE_WEBHOOK_SECRET` | nur bei Stripe |
 
 > `PORT` nicht setzen.
+
+### Unzer einrichten
+
+1. Konto in [Unzer Insights](https://insights.unzer.com/) anlegen und den
+   **privaten Schlüssel** kopieren (`s-priv-...` = Sandbox, `p-priv-...` = Live).
+2. In Cloudflare `PAYMENT_PROVIDER=unzer` und `UNZER_PRIVATE_KEY` setzen.
+3. Webhook im Unzer-Dashboard auf
+   `https://<projekt>.pages.dev/api/webhook` registrieren, Events
+   `payment.completed`, `payment.pending`, `charge.succeeded` und
+   `charge.failed`.
+4. **Unzer-IPs allowlisten** (siehe
+   [Basic integration requirements](https://docs.unzer.com/reference/basic-integration-req/)).
+   Unzer signiert Webhooks nicht; die Funktion lädt die Zahlung zusätzlich über
+   `retrieveUrl` serverseitig nach.
+
+Der Anbieter wird automatisch erkannt, wenn `PAYMENT_PROVIDER` fehlt
+(`UNZER_PRIVATE_KEY` → Unzer, sonst Paypercut).
+
+### Sandbox-Testkarten
+
+Für Testzahlungen im Sandbox-Modus die
+[Unzer-Testkarten](https://docs.unzer.com/reference/test-cards/) verwenden.
 
 ## 3. Zahlungsfunktionen
 

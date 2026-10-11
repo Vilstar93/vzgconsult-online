@@ -4,14 +4,16 @@
 // Ablauf:
 //   1. Produkt prüfen und eine eindeutige Bestell-ID erzeugen.
 //   2. Bestellung in KV (Binding ORDERS) als "pending" ablegen.
-//   3. Paypercut-Checkout erzeugen; success_url enthält die Bestell-ID.
+//   3. Checkout beim Zahlungsanbieter erzeugen (Unzer oder Paypercut);
+//      die Rücksprung-URL enthält die Bestell-ID.
 //   4. Nach der Zahlung prüft /api/download die Zahlung und liefert das PDF.
 //
 // Benötigte Umgebungsvariablen:
-//   PAYMENT_PROVIDER=paypercut
+//   PAYMENT_PROVIDER=unzer|paypercut
+//   UNZER_PRIVATE_KEY=s-priv-... | p-priv-...
 //   PAYPERCUT_SECRET_KEY=sk_...
-//   PUBLIC_BASE_URL=https://vzgconsult.online
 import { findProduct } from './_products.js';
+import { createCheckout, providerFor } from './_payments.js';
 
 function json(body, status = 200) {
     return new Response(JSON.stringify(body), {
@@ -55,44 +57,29 @@ export async function onRequestPost(context) {
     if (!product) {
         return json({ message: 'Unbekanntes Produkt.' }, 400);
     }
-    if (!env.PAYPERCUT_SECRET_KEY) {
+    if (!providerFor(env)) {
         return json({ message: 'Zahlung ist nicht konfiguriert.' }, 500);
     }
 
     const base = baseUrl(request, env);
     const token = orderId();
 
-    const response = await fetch('https://api.paypercut.io/v1/checkouts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${env.PAYPERCUT_SECRET_KEY}`
-        },
-        body: JSON.stringify({
-            currency: 'EUR',
-            mode: 'payment',
-            ui_mode: 'hosted',
-            success_url: `${base}/download.html?order=${token}`,
-            cancel_url: `${base}/ratgeber.html`,
-            customer_email: data.email || undefined,
-            client_reference_id: token,
-            metadata: { order: token, slug: product.slug },
-            line_items: [
-                {
-                    quantity: 1,
-                    price_data: {
-                        currency: 'EUR',
-                        unit_amount: product.amountCents,
-                        product_data: { name: product.name }
-                    }
-                }
-            ]
-        })
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-        return json({ message: result.message || 'Zahlung konnte nicht erstellt werden.' }, 400);
+    let checkout;
+    try {
+        checkout = await createCheckout(
+            {
+                amountCents: product.amountCents,
+                itemName: product.name,
+                reference: token,
+                email: data.email,
+                successUrl: `${base}/download.html?order=${token}`,
+                cancelUrl: `${base}/ratgeber.html`,
+                metadata: { order: token, slug: product.slug }
+            },
+            env
+        );
+    } catch (error) {
+        return json({ message: error.message || 'Zahlung konnte nicht erstellt werden.' }, 400);
     }
 
     if (env.ORDERS) {
@@ -100,7 +87,8 @@ export async function onRequestPost(context) {
             `order:${token}`,
             JSON.stringify({
                 slug: product.slug,
-                checkoutId: result.id,
+                provider: providerFor(env),
+                checkoutId: checkout.id,
                 status: 'pending',
                 createdAt: new Date().toISOString()
             }),
@@ -108,11 +96,7 @@ export async function onRequestPost(context) {
         );
     }
 
-    const url = result.url || result.checkout_url;
-    if (!url) {
-        return json({ message: 'Keine Checkout-Adresse erhalten.' }, 502);
-    }
-    return json({ url });
+    return json({ url: checkout.url });
 }
 
 export async function onRequestGet() {
