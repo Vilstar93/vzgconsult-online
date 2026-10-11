@@ -209,9 +209,11 @@ app.post('/api/publish', (req, res) => {
             if (addErr) return res.json({ ok: false, message: 'git add fehlgeschlagen.' });
             // Workflow-Dateien ausklammern: das Push-Token hat keinen `workflow`-Scope.
             git(['reset', '-q', '--', '.github/workflows'], () => {
-                git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out) => {
-                    if (commitErr && !/nothing to commit/.test(String(out))) {
-                        return res.json({ ok: false, message: 'git commit fehlgeschlagen.' });
+                git(['-c', 'user.name=VZG Editor', '-c', 'user.email=editor@vzgconsult.online', 'commit', '-m', msg], (commitErr, out, errOut) => {
+                    const combined = `${out || ''}${errOut || ''}`;
+                    // "nothing to commit" ist kein Fehler: dann nur pushen.
+                    if (commitErr && !/nothing to commit|no changes added/i.test(combined)) {
+                        return res.json({ ok: false, message: 'git commit fehlgeschlagen.', detail: combined.slice(0, 400) });
                     }
                     afterCommit();
                 });
