@@ -2,18 +2,8 @@
  * VZG Consult – Checkout / Zahlungsintegration
  * -------------------------------------------------------------------
  * Diese Datei verbindet das Buchungsformular mit einem Zahlungs-Endpunkt.
- * Sie ist bewusst ohne API-Schlüssel: Die Zahlung wird serverseitig erzeugt
- * (Stripe Checkout / Payment Link), damit keine Secrets im Browser landen.
- *
- * SO AKTIVIEREN SIE DIE ONLINE-ZAHLUNG:
- *   1. Zahlungsanbieter wählen (z. B. Stripe – siehe PAYMENTS.md).
- *   2. Auf der Buchungsseite am <form> das Attribut `data-checkout-url`
- *      auf Ihren Endpunkt setzen, z. B.:
- *         data-checkout-url="/api/create-checkout-session"
- *      Der Endpunkt erhält die Formulardaten als JSON und gibt zurück:
- *         { "url": "https://checkout.stripe.com/..." }
- *   3. Ohne `data-checkout-url` läuft das Formular im Demo-Modus:
- *      Es wird keine Zahlung ausgelöst, nur eine Bestätigung angezeigt.
+ * Der Vercel-Endpunkt baut einen Shopify Cart-Permalink. Es wird kein API-Token
+ * benötigt; bezahlt wird anschließend im gehosteten Shopify Checkout.
  */
 (function () {
     'use strict';
@@ -75,10 +65,6 @@
         event.preventDefault();
 
         var checkoutUrl = form.getAttribute('data-checkout-url');
-        var payNow =
-            form.querySelector('input[name="payment"]:checked') &&
-            form.querySelector('input[name="payment"]:checked').value === 'online';
-
         if (!checkoutUrl) {
             // Demo-Modus: kein Zahlungsanbieter konfiguriert.
             showConfirmation();
@@ -97,8 +83,6 @@
         new FormData(form).forEach(function (value, key) {
             data[key] = value;
         });
-        data.payNow = payNow;
-
         fetch(checkoutUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -121,13 +105,7 @@
                 updatePrice();
             })
             .catch(function () {
-                // Kein Server erreichbar (z. B. rein statisches Hosting):
-                // Anfrage trotzdem bestätigen, Zahlung erfolgt per Rechnung.
-                showConfirmation(
-                    'Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.'
-                );
-                form.reset();
-                updatePrice();
+                showConfirmation('Der Shopify Checkout konnte nicht gestartet werden. Bitte versuchen Sie es erneut.');
             })
             .finally(function () {
                 if (submitButton) {

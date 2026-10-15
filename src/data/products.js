@@ -4,6 +4,7 @@
 module.exports = [
     {
         slug: 'energie-ratgeber',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59905305018713',
         name: 'Energie-Ratgeber: Weniger zahlen für Strom & Gas',
         shortName: 'Energie-Ratgeber',
         price: '199 €',

@@ -65,10 +65,10 @@
                                 <li>Apple Pay &amp; Google Pay</li>
                             </ul>
                         </div>
-                        <p class="small text-muted mb-0">Alternativ können Sie die Zahlung auch nach der Terminbestätigung per Rechnung begleichen.</p>
+                        <p class="small text-muted mb-0">Ihre Kontaktdaten geben Sie anschließend im sicheren Shopify Checkout ein.</p>
                     </div>
                     <div class="col-lg-7">
-                        <form class="bg-faded rounded p-4" id="bookingForm" action="#" method="post" data-checkout="stripe" data-checkout-url="/api/create-checkout-session" data-thank-you="#buchung-bestaetigung">
+                        <form class="bg-faded rounded p-4" id="bookingForm" action="#" method="post" data-checkout="shopify" data-checkout-url="/api/create-checkout-session" data-thank-you="#buchung-bestaetigung">
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label" for="service">Leistung</label>
@@ -101,37 +101,6 @@
                                         <option value="16:00">16:00</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input class="form-control" id="name" type="text" name="name" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="email">E-Mail</label>
-                                    <input class="form-control" id="email" type="email" name="email" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="phone">Telefon</label>
-                                    <input class="form-control" id="phone" type="tel" name="phone" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="address">PLZ / Ort</label>
-                                    <input class="form-control" id="address" type="text" name="address" />
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label" for="notes">Nachricht / Zählernummer (optional)</label>
-                                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Zahlungsart</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="pay-now" type="radio" name="payment" value="online" checked />
-                                        <label class="form-check-label" for="pay-now">Jetzt online bezahlen</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="pay-later" type="radio" name="payment" value="invoice" />
-                                        <label class="form-check-label" for="pay-later">Zahlung nach Bestätigung</label>
-                                    </div>
-                                </div>
                                 <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" id="agb" type="checkbox" name="agb" required />
@@ -155,7 +124,7 @@
                         <div class="mt-4" id="buchung-bestaetigung">
                             <div class="alert alert-success d-none" role="alert">
                                 <strong>Vielen Dank!</strong>
-                                Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.
+                                Sie werden zum sicheren Shopify Checkout weitergeleitet.
                             </div>
                         </div>
                     </div>

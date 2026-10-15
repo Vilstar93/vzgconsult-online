@@ -1,9 +1,9 @@
 /*
  * VZG Consult – Kauf und Download des digitalen Ratgebers.
  * ------------------------------------------------------------------
- * Kauf: Klick auf „Jetzt kaufen" erzeugt serverseitig eine Zahlung
- * (/api/buy-handbook) und leitet zum gehosteten Checkout weiter.
- * Download: /download.html?order=<token> prüft die Zahlung und lädt das PDF.
+ * Kauf: Klick auf „Jetzt kaufen" erstellt serverseitig einen Shopify-Cart-Link
+ * (/api/buy-handbook) und leitet direkt zum Shopify Checkout weiter. Die digitale
+ * Zustellung erfolgt nach der Zahlung über Shopify.
  */
 (function () {
     'use strict';

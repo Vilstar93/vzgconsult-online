@@ -39,10 +39,10 @@ html(lang='de')
                                 li Klarna (Rechnung / Raten)
                                 li Apple Pay &amp; Google Pay
                         p.small.text-muted.mb-0
-                            | Alternativ können Sie die Zahlung auch nach der Terminbestätigung per Rechnung begleichen.
+                            | Ihre Kontaktdaten geben Sie anschließend im sicheren Shopify Checkout ein.
 
                     .col-lg-7
-                        form#bookingForm.bg-faded.rounded.p-4(action='#', method='post', data-checkout='stripe', data-checkout-url='/api/create-checkout-session', data-thank-you='#buchung-bestaetigung')
+                        form#bookingForm.bg-faded.rounded.p-4(action='#', method='post', data-checkout='shopify', data-checkout-url='/api/create-checkout-session', data-thank-you='#buchung-bestaetigung')
                             .row.g-3
                                 .col-12
                                     label.form-label(for='service') Leistung
@@ -64,29 +64,6 @@ html(lang='de')
                                         option(value='13:00') 13:00
                                         option(value='14:30') 14:30
                                         option(value='16:00') 16:00
-                                .col-md-6
-                                    label.form-label(for='name') Name
-                                    input#name.form-control(type='text', name='name', required)
-                                .col-md-6
-                                    label.form-label(for='email') E-Mail
-                                    input#email.form-control(type='email', name='email', required)
-                                .col-md-6
-                                    label.form-label(for='phone') Telefon
-                                    input#phone.form-control(type='tel', name='phone', required)
-                                .col-md-6
-                                    label.form-label(for='address') PLZ / Ort
-                                    input#address.form-control(type='text', name='address')
-                                .col-12
-                                    label.form-label(for='notes') Nachricht / Zählernummer (optional)
-                                    textarea#notes.form-control(name='notes', rows='3')
-                                .col-12
-                                    label.form-label Zahlungsart
-                                    .form-check
-                                        input#pay-now.form-check-input(type='radio', name='payment', value='online', checked)
-                                        label.form-check-label(for='pay-now') Jetzt online bezahlen
-                                    .form-check
-                                        input#pay-later.form-check-input(type='radio', name='payment', value='invoice')
-                                        label.form-check-label(for='pay-later') Zahlung nach Bestätigung
                                 .col-12
                                     .form-check
                                         input#agb.form-check-input(type='checkbox', name='agb', required)
@@ -104,7 +81,7 @@ html(lang='de')
                         #buchung-bestaetigung.mt-4
                             .alert.alert-success.d-none(role='alert')
                                 strong Vielen Dank!
-                                |  Ihre Buchungsanfrage ist bei uns eingegangen. Wir senden Ihnen in Kürze eine Bestätigung und – bei Online-Zahlung – einen sicheren Zahlungslink per E-Mail.
+                                |  Sie werden zum sicheren Shopify Checkout weitergeleitet.
 
         section.page-section
             .container

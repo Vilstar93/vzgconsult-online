@@ -4,6 +4,7 @@
 module.exports = [
     {
         name: 'Erstberatung Energie',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909091918169',
         price: '49 €',
         amountCents: 4900,
         duration: 'ca. 30 Minuten, telefonisch',
@@ -13,6 +14,7 @@ module.exports = [
     },
     {
         name: 'Tarif-Check & Optimierung',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909092540761',
         price: '99 €',
         amountCents: 9900,
         duration: 'ca. 60 Minuten',
@@ -23,6 +25,7 @@ module.exports = [
     },
     {
         name: 'Wechsel-Service',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909097488729',
         price: '149 €',
         amountCents: 14900,
         duration: 'bis zum Abschluss des Wechsels',
@@ -32,6 +35,7 @@ module.exports = [
     },
     {
         name: 'Vor-Ort-Energieberatung',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909108924761',
         price: '249 €',
         amountCents: 24900,
         duration: 'ca. 60 – 90 Minuten vor Ort',
@@ -41,6 +45,7 @@ module.exports = [
     },
     {
         name: 'Kundenbetreuung & Callcenter-Service',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909102862681',
         price: '39 € / Std.',
         amountCents: 3900,
         duration: 'monatlich oder auf Abruf',
@@ -50,6 +55,7 @@ module.exports = [
     },
     {
         name: 'Business-Paket',
+        shopifyVariantId: 'gid://shopify/ProductVariant/59909104304473',
         price: '599 € / Monat',
         amountCents: 59900,
         duration: 'fortlaufend, monatlich kündbar',
