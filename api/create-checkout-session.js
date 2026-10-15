@@ -23,12 +23,26 @@ module.exports = async (req, res) => {
             return res.status(400).json({ message: 'Unbekannte Leistung.' });
         }
 
+        let properties = [
+            { key: 'Wunschdatum', value: data.date },
+            { key: 'Uhrzeit', value: data.time }
+        ];
+        if (service.name === 'Erstberatung Energie') {
+            const startAt = new Date(data.startAt);
+            if (!Number.isFinite(startAt.getTime()) || startAt.getTime() < Date.now() + 2 * 60 * 60 * 1000) {
+                return res.status(400).json({ message: 'Bitte wählen Sie einen Termin mindestens zwei Stunden im Voraus.' });
+            }
+            properties = [
+                { key: 'Termin (Deutschland)', value: new Intl.DateTimeFormat('de-DE', {
+                    timeZone: 'Europe/Berlin', dateStyle: 'full', timeStyle: 'short'
+                }).format(startAt) },
+                { key: 'Dauer', value: '15 Minuten' }
+            ];
+        }
+
         const url = await createShopifyCheckout({
             variantId: service.shopifyVariantId,
-            properties: [
-                { key: 'Wunschdatum', value: data.date },
-                { key: 'Uhrzeit', value: data.time }
-            ]
+            properties
         });
 
         return res.json({ url });

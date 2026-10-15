@@ -29,6 +29,7 @@ test('Cloudflare handbook and service endpoints return Shopify checkout links', 
     assert.equal(handbookUrl.pathname, '/cart/59905305018713:1');
     assert.equal(handbookUrl.searchParams.has('checkout'), false);
 
+    const startAt = new Date(Date.now() + 3 * 60 * 60 * 1000);
     const serviceResponse = await bookService({
         env,
         request: new Request('https://vzgconsult.online/api/create-checkout-session', {
@@ -36,7 +37,8 @@ test('Cloudflare handbook and service endpoints return Shopify checkout links', 
             body: JSON.stringify({
                 service: 'Erstberatung Energie',
                 date: '2026-10-20',
-                time: '10:00'
+                time: '10:00',
+                startAt: startAt.toISOString()
             })
         })
     });
@@ -45,5 +47,19 @@ test('Cloudflare handbook and service endpoints return Shopify checkout links', 
     assert.equal(serviceUrl.pathname, '/cart/59909091918169:1');
     assert.equal(serviceUrl.searchParams.has('checkout'), false);
     const properties = JSON.parse(Buffer.from(serviceUrl.searchParams.get('properties'), 'base64url').toString());
-    assert.deepEqual(properties, { Wunschdatum: '2026-10-20', Uhrzeit: '10:00' });
+    assert.deepEqual(properties, {
+        'Termin (Deutschland)': new Intl.DateTimeFormat('de-DE', {
+            timeZone: 'Europe/Berlin', dateStyle: 'full', timeStyle: 'short'
+        }).format(startAt),
+        Dauer: '15 Minuten'
+    });
+
+    const tooSoon = await bookService({
+        env,
+        request: new Request('https://vzgconsult.online/api/create-checkout-session', {
+            method: 'POST',
+            body: JSON.stringify({ service: 'Erstberatung Energie', startAt: new Date(Date.now() + 60 * 60 * 1000).toISOString() })
+        })
+    });
+    assert.equal(tooSoon.status, 400);
 });

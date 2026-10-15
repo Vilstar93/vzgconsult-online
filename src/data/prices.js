@@ -5,9 +5,9 @@ module.exports = [
     {
         name: 'Erstberatung Energie',
         shopifyVariantId: 'gid://shopify/ProductVariant/59909091918169',
-        price: '49 €',
-        amountCents: 4900,
-        duration: 'ca. 30 Minuten, telefonisch',
+        price: '19,99 €',
+        amountCents: 1999,
+        duration: '15 Minuten, telefonisch',
         description:
             'Erste Einschätzung Ihrer Energiekosten und Ihrer Einsparmöglichkeiten – unverbindlich und schnell.',
         features: ['Kurze Verbrauchsanalyse', 'Erste Tarifeinschätzung', 'Ansprechpartner für Rückfragen']

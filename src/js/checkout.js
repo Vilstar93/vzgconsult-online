@@ -15,6 +15,29 @@
 
     var serviceSelect = document.getElementById('service');
     var priceEl = document.getElementById('selectedPrice');
+    var dateInput = document.getElementById('date');
+    var timeSelect = document.getElementById('time');
+    var phoneTime = document.getElementById('phoneTime');
+    var phoneTimeHint = document.getElementById('phoneTimeHint');
+    var phoneService = 'Erstberatung Energie';
+    if (dateInput) {
+        var today = new Date();
+        dateInput.min = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+    }
+
+    function updateAppointmentFields() {
+        var isPhone = serviceSelect && serviceSelect.value === phoneService;
+        if (timeSelect && phoneTime) {
+            timeSelect.classList.toggle('d-none', isPhone);
+            timeSelect.disabled = isPhone;
+            phoneTime.classList.toggle('d-none', !isPhone);
+            phoneTime.disabled = !isPhone;
+            phoneTime.required = isPhone;
+        }
+        if (phoneTimeHint) {
+            phoneTimeHint.classList.toggle('d-none', !isPhone);
+        }
+    }
 
     function updatePrice() {
         if (!serviceSelect || !priceEl) {
@@ -24,6 +47,7 @@
         if (option && option.getAttribute('data-price')) {
             priceEl.textContent = option.getAttribute('data-price');
         }
+        updateAppointmentFields();
     }
 
     if (serviceSelect) {
@@ -83,6 +107,19 @@
         new FormData(form).forEach(function (value, key) {
             data[key] = value;
         });
+        if (data.service === phoneService) {
+            var appointment = new Date(data.date + 'T' + data.phoneTime);
+            if (!Number.isFinite(appointment.getTime()) || appointment.getTime() < Date.now() + 2 * 60 * 60 * 1000) {
+                showConfirmation('Bitte wählen Sie einen Termin, der mindestens zwei Stunden in der Zukunft liegt.');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Verbindlich buchen';
+                }
+                return;
+            }
+            data.startAt = appointment.toISOString();
+            data.time = data.phoneTime;
+        }
         fetch(checkoutUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

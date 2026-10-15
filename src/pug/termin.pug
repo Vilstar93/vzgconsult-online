@@ -28,7 +28,7 @@ html(lang='de')
                             span.section-heading-upper Service booking
                             span.section-heading-lower Termin buchen
                         p
-                            | Wählen Sie Ihre Leistung, Ihren Wunschtermin und bezahlen Sie bequem online. Nach der Buchung erhalten Sie eine Bestätigung per E-Mail.
+                            | Wählen Sie Ihre Leistung, Ihren Wunschtermin und bezahlen Sie bequem online. Die Bestellbestätigung erhalten Sie per E-Mail.
                         .bg-faded.rounded.p-4.mb-4
                             h2.h6.text-uppercase.mb-3 Bezahlung
                             p.small.mb-2
@@ -64,6 +64,8 @@ html(lang='de')
                                         option(value='13:00') 13:00
                                         option(value='14:30') 14:30
                                         option(value='16:00') 16:00
+                                    input#phoneTime.form-control.d-none(type='time', name='phoneTime', step='60', disabled)
+                                    p#phoneTimeHint.small.text-muted.d-none.mt-1.mb-0 Ihre lokale Uhrzeit. Der Termin muss mindestens zwei Stunden in der Zukunft liegen.
                                 .col-12
                                     .form-check
                                         input#agb.form-check-input(type='checkbox', name='agb', required)
@@ -92,7 +94,7 @@ html(lang='de')
                                 span.section-heading-upper Terminorganisation
                                 span.section-heading-lower Wie es weitergeht
                             p.mb-0
-                                | Nach Ihrer Buchung erhalten Sie eine Kalender-Einladung. Für Firmen- und Großkunden koordinieren wir Termine individuell – sprechen Sie uns einfach an.
+                                | Ihr gewählter Termin wird im Shopify Checkout angezeigt. Bitte verwenden Sie beim Bezahlen Ihre E-Mail-Adresse. Für Firmen- und Großkunden koordinieren wir Termine individuell – sprechen Sie uns einfach an.
 
         include includes/footer
 
