@@ -30,7 +30,6 @@ function createShopifyCheckout(options) {
     const variantId = numericVariantId(options.variantId);
     const quantity = Number.isInteger(options.quantity) && options.quantity > 0 ? options.quantity : 1;
     const url = new URL(`https://${domain}/cart/${variantId}:${quantity}`);
-    url.searchParams.set('checkout', '');
 
     const properties = Object.fromEntries(
         (options.properties || [])
